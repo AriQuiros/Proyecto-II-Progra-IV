@@ -22,7 +22,7 @@ public class Paciente {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<org.example.sistema_citas.logic.Cita> citas = new LinkedHashSet<>();
+    private Set<org.example.backendp2p4.logic.Cita> citas = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -40,11 +40,11 @@ public class Paciente {
         this.usuario = usuario;
     }
 
-    public Set<org.example.sistema_citas.logic.Cita> getCitas() {
+    public Set<org.example.backendp2p4.logic.Cita> getCitas() {
         return citas;
     }
 
-    public void setCitas(Set<org.example.sistema_citas.logic.Cita> citas) {
+    public void setCitas(Set<org.example.backendp2p4.logic.Cita> citas) {
         this.citas = citas;
     }
 
