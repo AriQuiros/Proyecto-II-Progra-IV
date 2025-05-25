@@ -1,0 +1,173 @@
+/* ======= INDEX ======= */
+.registro-alert-doctor {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 9999;
+    animation: fadeOut 5s forwards;
+}
+/* Search */
+.search-contenido-doctor {
+    margin: 20px 60px;
+    background-color: #eeeeee;
+    justify-content: center;
+}
+.search-bar-doctor {
+    background: #ffffff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 90%;
+    margin-left: 70px;
+    margin-top: 20px;
+}
+.search-bar-doctor form {
+    display: flex;
+    gap: 10px;
+}
+.search-bar-doctor input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.search-bar-doctor button {
+    background: #0d6efd;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.search-bar-doctor button:hover {
+    background: #084298;
+}
+/* Cards */
+.cards-doctor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.medico-card-doctor {
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 90%;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+/* Card left */
+.card-left-doctor {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.doctor-img-doctor {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.card-left-doctor h4 {
+    margin: 0;
+    font-size: 17px;
+}
+.card-left-doctor p {
+    margin: 5px 0;
+    text-align: center;
+}
+/* Card right */
+.card-right-doctor {
+    text-align: right;
+    display: flex;
+    justify-content: center;
+}
+.horario-group-doctor {
+    margin-bottom: 8px;
+    margin-right: 70px;
+}
+.h-doctor {
+    display: flex;
+    margin: 5px 0;
+    text-align: center;
+}
+.h-doctor p {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 17px;
+    margin: 0 0 0 5px;
+}
+.horas-doctor span {
+    background: #e3f2fd;
+    margin-right: 5px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: inline-block;
+}
+/* Botón */
+.boton-doctor button {
+    background: #e3e8ff;
+    color: #007bff;
+    border: none;
+    padding: 8px 8px;
+    margin-top: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+.card-right-doctor button i {
+    margin-left: 5px;
+}
+.boton-doctor button:hover {
+    background-color: #c6d2ff;
+}
+/* Animación */
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+.hora-libre {
+    background: #eaf4ff;  /* azul claro */
+    color: #007bff;       /* azul oscuro */
+    padding: 4px 12px;
+    margin: 5px 0;
+    border-radius: 50px;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.hora-libre:hover {
+    background: #cce6ff;
+}
+
+.hora-ocupada {
+    background: #ffcccc;
+    color: #cc0000;
+    padding: 4px 12px;
+    margin: 5px 0;
+    border-radius: 50px;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
