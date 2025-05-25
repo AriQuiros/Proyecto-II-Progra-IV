@@ -2,6 +2,7 @@
 import React from 'react';
 import logo from '../../imagenes/logo.png';
 import '../../css/common.css';
+import {Link} from "react-router-dom";
 
 const Header = ({ rol }) => {
     return (
@@ -55,7 +56,7 @@ const Header = ({ rol }) => {
                         {!rol && (
                             <>
                                 <li><a href="/">Search</a></li>
-                                <li><a href="/login">Login</a></li>
+                                <Link to="/login">Login</Link>
                             </>
                         )}
                     </ul>
