@@ -1,10 +1,13 @@
-// src/componentes/common/Header.js
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from '../../imagenes/logo.png';
 import '../../css/common.css';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
 
-const Header = ({ rol }) => {
+const Header = () => {
+    const { usuario, logout } = useContext(AppContext);
+    const rol = usuario?.rol;
+
     return (
         <header className={`header header-${rol?.toLowerCase() || 'index'}`}>
             <div className="header-container">
@@ -19,13 +22,13 @@ const Header = ({ rol }) => {
 
                         {rol === 'MEDICO' && (
                             <>
-                                <li><a href="/medicos/show">Appointments</a></li>
-                                <li><a href="/medicos/perfil">Profile</a></li>
+                                <li><Link to="/medicos/show">Appointments</Link></li>
+                                <li><Link to="/medicos/perfil">Profile</Link></li>
                                 <li className="dropdown">
                                     <a href="#">Banner▼</a>
                                     <ul className="dropdown-menu">
-                                        <li><a href="/medicos/settings">Settings</a></li>
-                                        <li><a href="/logout">Log out</a></li>
+                                        <li><Link to="/medicos/settings">Settings</Link></li>
+                                        <li><button onClick={logout} className="logout-button">Log out</button></li>
                                     </ul>
                                 </li>
                             </>
@@ -33,12 +36,12 @@ const Header = ({ rol }) => {
 
                         {rol === 'PACIENTE' && (
                             <>
-                                <li><a href="/pacientes/citas">Historico</a></li>
-                                <li><a href="/pacientes/indexPaciente">Search</a></li>
+                                <li><Link to="/pacientes/citas">Historico</Link></li>
+                                <li><Link to="/pacientes/indexPaciente">Search</Link></li>
                                 <li className="dropdown">
                                     <a href="#">SLee▼</a>
                                     <ul className="dropdown-menu">
-                                        <li><a href="/logout">Log out</a></li>
+                                        <li><button onClick={logout} className="logout-button">Log out</button></li>
                                     </ul>
                                 </li>
                             </>
@@ -48,14 +51,14 @@ const Header = ({ rol }) => {
                             <li className="dropdown">
                                 <a href="#">Banner▼</a>
                                 <ul className="dropdown-menu">
-                                    <li><a href="/logout">Log out</a></li>
+                                    <li><button onClick={logout} className="logout-button">Log out</button></li>
                                 </ul>
                             </li>
                         )}
 
                         {!rol && (
                             <>
-                                <li><a href="/">Search</a></li>
+                                <li><Link to="/">Search</Link></li>
                                 <li><Link to="/login">Login</Link></li>
                             </>
                         )}

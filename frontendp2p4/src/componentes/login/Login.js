@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import usuario from '../../imagenes/usuario.png';
 import '../../css/stylesheet.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
 
 const Login = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+
+    const { login } = useContext(AppContext);
+    const navigate = useNavigate(); // para redirigir
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,11 +29,26 @@ const Login = () => {
             }
 
             const data = await res.json();
-            localStorage.setItem('token', data.token); // suponiendo que el backend devuelve { token: '...' }
+
+            // Suponemos que el backend responde con { token, rol, nombre }
+            login({
+                token: data.token,
+                rol: data.rol,
+                nombre: data.nombre,
+            });
+
             setError(null);
             alert('Login exitoso');
-            // Redirigir según el rol
-            // window.location.href = '/';
+
+            // Redireccionar según el rol
+            if (data.rol === 'MEDICO') {
+                navigate('/medicos/perfil');
+            } else if (data.rol === 'PACIENTE') {
+                navigate('/pacientes/indexPaciente');
+            } else {
+                navigate('/');
+            }
+
         } catch (err) {
             setError('Error de conexión con el servidor');
         }
