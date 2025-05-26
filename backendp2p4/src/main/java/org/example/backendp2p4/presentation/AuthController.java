@@ -1,0 +1,86 @@
+package org.example.backendp2p4.presentation;
+
+import org.example.backendp2p4.data.UsuarioRepository;
+import org.example.backendp2p4.logic.Medico;
+import org.example.backendp2p4.logic.Paciente;
+import org.example.backendp2p4.logic.Service;
+import org.example.backendp2p4.logic.Usuario;
+import org.example.backendp2p4.security.CustomUserDetails;
+import org.example.backendp2p4.security.TokenService;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/auth")
+@AllArgsConstructor
+public class AuthController {
+
+    @Autowired
+    private Service service;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    private final UsuarioRepository usuarioRepository;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
+
+
+    @PostMapping("/register/medico")
+    public ResponseEntity<?> registrarMedico(@RequestBody Medico medico) {
+        Usuario usuario = medico.getUsuario();
+
+        if (service.existeUsuarioConNombre(usuario.getNombre())) {
+            return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso.");
+        }
+
+        usuario.setClave(passwordEncoder.encode(usuario.getClave()));
+        usuario.setRol("MEDICO");
+        medico.setUsuario(usuario);
+        medico.setEstado("PENDIENTE");  // muy importante
+
+        service.saveMedico(medico);
+
+        return ResponseEntity.ok("Médico registrado exitosamente");
+    }
+
+    @PostMapping("/register/paciente")
+    public ResponseEntity<?> registrarPaciente(@RequestBody Usuario usuario) {
+        if (service.existeUsuarioConNombre(usuario.getNombre())) {
+            return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso.");
+        }
+
+        usuario.setClave(passwordEncoder.encode(usuario.getClave()));
+        usuario.setRol("PACIENTE");
+
+        Paciente paciente = new Paciente();
+        paciente.setUsuario(usuario);
+
+        service.savePaciente(paciente);
+
+        return ResponseEntity.ok("Paciente registrado exitosamente");
+    }
+
+
+    @PostMapping("/login")
+    public Map<String, String> login(@RequestBody Usuario usuario) {
+        var authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(usuario.getNombre(), usuario.getClave()));
+
+        var token = tokenService.generateToken(authentication);
+        var custom = (CustomUserDetails) authentication.getPrincipal();
+
+        Map<String, String> result = new HashMap<>();
+        result.put("token", token);
+        result.put("nombre", custom.getUsuario().getNombre());
+        result.put("rol", custom.getUsuario().getRol());
+        return result;
+    }
+
+}

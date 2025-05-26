@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../../css/stylesheet.css';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPatient = () => {
     const [form, setForm] = useState({
@@ -12,22 +13,45 @@ const RegisterPatient = () => {
     });
 
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (form.clave !== form.confirmClave) {
             setError('Passwords do not match!');
             return;
         }
 
-        // Aquí se enviaría al backend
-        console.log('Registro enviado:', form);
-        alert('Registro simulado exitoso');
+        try {
+            const res = await fetch('http://localhost:8080/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombre: form.nombre,
+                    clave: form.clave,
+                    rol: form.rol
+                }),
+            });
+
+            if (!res.ok) {
+                const message = await res.text();
+                setError(message || 'Error al registrar');
+                return;
+            }
+
+            alert('Registro exitoso');
+            navigate('/login'); // Redirige al login
+        } catch (err) {
+            setError('Error de conexión con el servidor');
+        }
     };
 
     return (
@@ -54,7 +78,6 @@ const RegisterPatient = () => {
                         <input
                             type="password"
                             name="clave"
-                            id="clave"
                             placeholder="Password"
                             value={form.clave}
                             onChange={handleChange}
@@ -67,7 +90,6 @@ const RegisterPatient = () => {
                         <input
                             type="password"
                             name="confirmClave"
-                            id="confirmClave"
                             placeholder="Confirm Password"
                             value={form.confirmClave}
                             onChange={handleChange}
