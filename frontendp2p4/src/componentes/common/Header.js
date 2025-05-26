@@ -56,7 +56,7 @@ const Header = ({ rol }) => {
                         {!rol && (
                             <>
                                 <li><a href="/">Search</a></li>
-                                <Link to="/login">Login</Link>
+                                <li><Link to="/login">Login</Link></li>
                             </>
                         )}
                     </ul>
