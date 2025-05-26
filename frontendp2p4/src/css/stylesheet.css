@@ -171,3 +171,125 @@
     opacity: 0.8;
 }
 
+/*ABOUT*/
+/* Contenedor principal */
+.about-contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* Centrado vertical */
+    text-align: center;
+}
+
+/* Título principal */
+.about-titulo {
+    font-size: 35px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Lista de nombres */
+.about-nombres {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo individual de cada nombre */
+.about-nombre-item {
+    display: inline-block;
+    background-color: #3498db;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.about-nombre-item p {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+/* Hover */
+.about-nombre-item:hover {
+    background-color: darkkhaki;
+    transform: scale(1.1);
+}
+
+
+/* ======= LOGIN ======= */
+.login-container-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+.login-box-auth {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+.user-avatar-auth img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.input-group-auth {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.input-group-auth i {
+    margin-right: 10px;
+}
+.input-group-auth input {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+/* Botón login / registro */
+.login-btn-auth {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+.login-btn-auth:hover {
+    background-color: #138496;
+}
+/* Link de registro */
+.register-link-auth {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+.register-link-auth:hover {
+    text-decoration: underline;
+}
+/* Mensaje de error */
+.error-message-auth {
+    color: #dc3545;
+    font-weight: bold;
+}

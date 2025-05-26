@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import usuario from '../../imagenes/usuario.png';
 import '../../css/stylesheet.css';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [userId, setUserId] = useState('');
@@ -66,7 +67,7 @@ const Login = () => {
                 </form>
                 {error && <p className="error-message-auth">{error}</p>}
                 <br />
-                <p>Don't have an account? <a href="/register" className="register-link-auth">Register</a></p>
+                <p>Don't have an account? <Link to="/register" className="register-link-auth">Register</Link></p>
             </div>
         </div>
     );

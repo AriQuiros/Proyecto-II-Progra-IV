@@ -15,7 +15,7 @@ const Header = ({ rol }) => {
 
                 <nav>
                     <ul>
-                        <li><a href="/about">About...</a></li>
+                        <li><Link to="/about">About</Link></li>
 
                         {rol === 'MEDICO' && (
                             <>
