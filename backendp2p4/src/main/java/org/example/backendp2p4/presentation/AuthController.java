@@ -67,6 +67,19 @@ public class AuthController {
         return ResponseEntity.ok("Paciente registrado exitosamente");
     }
 
+    @PostMapping("/register/admin")
+    public ResponseEntity<?> registrarAdmin(@RequestBody Usuario usuario) {
+        if (service.existeUsuarioConNombre(usuario.getNombre())) {
+            return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso.");
+        }
+
+        usuario.setClave(passwordEncoder.encode(usuario.getClave()));
+        usuario.setRol("ADMINISTRADOR");
+
+        service.saveUsuario(usuario);
+        return ResponseEntity.ok("Administrador registrado");
+    }
+
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody Usuario usuario) {
