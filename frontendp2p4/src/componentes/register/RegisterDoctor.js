@@ -11,8 +11,7 @@ const RegisterDoctor = () => {
         ciudad: '',
         costoConsulta: '',
         frecuencia: '',
-        instalacion: '',
-        rol: 'MEDICO'
+        instalacion: ''
     });
 
     const [error, setError] = useState(null);
@@ -36,20 +35,25 @@ const RegisterDoctor = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    nombre: form.nombre,
-                    clave: form.clave,
-                    rol: form.rol
-                    // NOTA: Los demás campos no se usan aún en el backend
-                }),
+                    usuario: {
+                        nombre: form.nombre,
+                        clave: form.clave
+                    },
+                    especialidad: form.especialidad,
+                    ciudad: form.ciudad,
+                    costoConsulta: parseInt(form.costoConsulta),
+                    frecuencia: parseInt(form.frecuencia),
+                    instalacion: form.instalacion
+                })
             });
 
             if (!res.ok) {
                 const message = await res.text();
-                setError(message || 'Error al registrar');
+                setError(message || 'Error al registrar médico');
                 return;
             }
 
-            alert('Registro exitoso');
+            alert('Registro exitoso. Espere aprobación.');
             navigate('/login');
         } catch (err) {
             setError('Error de conexión con el servidor');
@@ -61,10 +65,54 @@ const RegisterDoctor = () => {
             <div className="login-box-auth">
                 <h2>Doctor Registration</h2>
                 <form onSubmit={handleSubmit}>
-                    {/* Inputs idénticos a tu versión */}
-                    {/* ... */}
-                    {/* Todos tus campos originales están bien */}
-                    {/* ... */}
+                    <div className="input-group-auth">
+                        <i className="bi bi-person-fill"></i>
+                        <input type="text" name="nombre" placeholder="Full Name"
+                               value={form.nombre} onChange={handleChange} required />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-key-fill"></i>
+                        <input type="password" name="clave" placeholder="Password"
+                               value={form.clave} onChange={handleChange} required />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-key-fill"></i>
+                        <input type="password" name="confirmClave" placeholder="Confirm Password"
+                               value={form.confirmClave} onChange={handleChange} required />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-briefcase-fill"></i>
+                        <input type="text" name="especialidad" placeholder="Specialty"
+                               value={form.especialidad} onChange={handleChange} required />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-geo-alt-fill"></i>
+                        <input type="text" name="ciudad" placeholder="City"
+                               value={form.ciudad} onChange={handleChange} required />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-cash"></i>
+                        <input type="number" name="costoConsulta" placeholder="Consultation Cost"
+                               value={form.costoConsulta} onChange={handleChange} required min="1" />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-clock-fill"></i>
+                        <input type="number" name="frecuencia" placeholder="Frequency (minutes)"
+                               value={form.frecuencia} onChange={handleChange} required min="1" />
+                    </div>
+
+                    <div className="input-group-auth">
+                        <i className="bi bi-building"></i>
+                        <input type="text" name="instalacion" placeholder="Facility Name"
+                               value={form.instalacion} onChange={handleChange} required />
+                    </div>
+
                     <button type="submit" className="login-btn-auth">Register</button>
                 </form>
 
