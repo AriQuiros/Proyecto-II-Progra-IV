@@ -93,6 +93,12 @@
     display: flex;
     justify-content: center;
 }
+
+.card-right-doctor p{
+    font-weight: bold;
+    color: chocolate;
+    font-size: medium;
+}
 .horario-group-doctor {
     margin-bottom: 8px;
     margin-right: 70px;
