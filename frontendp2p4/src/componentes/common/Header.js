@@ -5,8 +5,14 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
 
 const Header = () => {
-    const { usuario, logout } = useContext(AppContext);
+    const { usuario, logout, loading } = useContext(AppContext);
+
+    if (loading) return null; // 🔁 no renderizar mientras carga
+
     const rol = usuario?.rol;
+
+    console.log("Usuario:", usuario);
+    console.log("Rol:", rol);
 
     return (
         <header className={`header header-${rol?.toLowerCase() || 'index'}`}>
@@ -25,7 +31,7 @@ const Header = () => {
                                 <li><Link to="/medicos/show">Appointments</Link></li>
                                 <li><Link to="/medicos/perfil">Profile</Link></li>
                                 <li className="dropdown">
-                                    <a href="#">Banner▼</a>
+                                    <button type="button" className="dropdown-toggle">Banner▼</button>
                                     <ul className="dropdown-menu">
                                         <li><Link to="/medicos/settings">Settings</Link></li>
                                         <li><button onClick={logout} className="logout-button">Log out</button></li>
@@ -39,7 +45,7 @@ const Header = () => {
                                 <li><Link to="/pacientes/citas">Historico</Link></li>
                                 <li><Link to="/pacientes/indexPaciente">Search</Link></li>
                                 <li className="dropdown">
-                                    <a href="#">SLee▼</a>
+                                    <button type="button" className="dropdown-toggle">SLee▼</button>
                                     <ul className="dropdown-menu">
                                         <li><button onClick={logout} className="logout-button">Log out</button></li>
                                     </ul>
@@ -49,7 +55,7 @@ const Header = () => {
 
                         {rol === 'ADMIN' && (
                             <li className="dropdown">
-                                <a href="#">Banner▼</a>
+                                <button type="button" className="dropdown-toggle">Banner▼</button>
                                 <ul className="dropdown-menu">
                                     <li><button onClick={logout} className="logout-button">Log out</button></li>
                                 </ul>

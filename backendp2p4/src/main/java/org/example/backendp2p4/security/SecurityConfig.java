@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/pacientes/**").hasAuthority("SCOPE_PACIENTE")
                         .requestMatchers("/admin/**").hasAuthority("SCOPE_ADMIN")
                         .requestMatchers("/api/medicos/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/login", "/register", "/about", "/static/**", "/index").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()))
                 .build();
