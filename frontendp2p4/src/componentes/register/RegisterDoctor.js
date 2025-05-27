@@ -32,7 +32,7 @@ const RegisterDoctor = () => {
         }
 
         try {
-            const res = await fetch('http://localhost:8080/auth/register', {
+            const res = await fetch('http://localhost:8080/auth/register/medico', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
