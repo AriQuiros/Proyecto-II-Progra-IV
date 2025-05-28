@@ -64,7 +64,7 @@ const AdminPanel = () => {
                 <tbody>
                 {doctores.map((medico) => (
                     <tr key={medico.id}>
-                        <td>{medico.usuario?.nombre}</td>
+                        <td>{medico.nombre}</td>
                         <td>{medico.especialidad}</td>
                         <td>{medico.ciudad}</td>
                         <td>{medico.costoConsulta}</td>

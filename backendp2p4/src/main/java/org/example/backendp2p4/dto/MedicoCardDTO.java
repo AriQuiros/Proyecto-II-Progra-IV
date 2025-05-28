@@ -12,6 +12,8 @@ public class MedicoCardDTO {
     private Integer costoConsulta;
     private Integer frecuencia;
     private String imagen;
+    private String estado;
+
 
     public Integer getId() { return id; }
 
@@ -49,4 +51,12 @@ public class MedicoCardDTO {
     }
 
     public void setImagen(String imagen) {this.imagen = imagen;}
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }

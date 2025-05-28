@@ -169,6 +169,7 @@ public class Service {
             dto.setInstalacion(medico.getInstalacion());
             dto.setCostoConsulta(medico.getCostoConsulta());
             dto.setImagen(medico.getImagen());
+            dto.setEstado(medico.getEstado());
 
             List<HorarioDTO> horarios = new ArrayList<>();
             for (org.example.backendp2p4.logic.Horario h : medico.getHorarios()) {

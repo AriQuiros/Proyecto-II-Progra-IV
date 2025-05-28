@@ -47,7 +47,6 @@ const RegisterPatient = () => {
                 return;
             }
 
-            alert('Registro exitoso');
             navigate('/login'); // Redirige al login
         } catch (err) {
             setError('Error de conexión con el servidor');

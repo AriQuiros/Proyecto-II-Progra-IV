@@ -1,5 +1,6 @@
 package org.example.backendp2p4.presentation;
 
+import org.example.backendp2p4.dto.MedicoCardDTO;
 import org.example.backendp2p4.logic.Medico;
 import org.example.backendp2p4.logic.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class AdminController {
     }
 
     @GetMapping("/doctores")
-    public ResponseEntity<List<Medico>> listarDoctores() {
-        List<Medico> medicos = (List<Medico>) service.findAllMedicos();
+    public ResponseEntity<List<MedicoCardDTO>> listarDoctores() {
+        List<MedicoCardDTO> medicos = service.convertirAMedicoCardDTO((List<Medico>) service.findAllMedicos());
         return ResponseEntity.ok(medicos);
     }
 

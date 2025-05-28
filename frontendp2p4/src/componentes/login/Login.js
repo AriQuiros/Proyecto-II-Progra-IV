@@ -38,7 +38,6 @@ const Login = () => {
             });
 
             setError(null);
-            alert('Login exitoso');
 
             // Redireccionar según el rol
             if (data.rol === 'MEDICO') {
