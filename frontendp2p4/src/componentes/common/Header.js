@@ -53,7 +53,7 @@ const Header = () => {
                             </>
                         )}
 
-                        {rol === 'ADMIN' && (
+                        {rol === 'ADMINISTRADOR' && (
                             <li className="dropdown">
                                 <button type="button" className="dropdown-toggle">Banner▼</button>
                                 <ul className="dropdown-menu">

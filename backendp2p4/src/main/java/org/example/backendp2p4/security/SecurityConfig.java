@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/medicos/**").hasAuthority("SCOPE_MEDICO")
                         .requestMatchers("/pacientes/**").hasAuthority("SCOPE_PACIENTE")
-                        .requestMatchers("/admin/**").hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers("/api/admin/**").hasAuthority("SCOPE_ADMINISTRADOR")
                         .requestMatchers("/api/medicos/**").permitAll()
                         .requestMatchers("/", "/index.html", "/login", "/register", "/about", "/static/**", "/index").permitAll()
                         .anyRequest().authenticated())

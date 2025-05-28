@@ -9,6 +9,7 @@ import RegisterType from './componentes/register/RegisterType';
 import RegisterPatient from './componentes/register/RegisterPatient';
 import RegisterDoctor from './componentes/register/RegisterDoctor';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AdminPanel from "./componentes/admin/AdminPanel";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function Main() {
             <Route path="/register" element={<RegisterType />} />
             <Route path="/register/patient" element={<RegisterPatient />} />
             <Route path="/register/doctor" element={<RegisterDoctor />} />
+            <Route path="/admin/AdminPanel" element={<AdminPanel />} />
         </Routes>
     );
 }

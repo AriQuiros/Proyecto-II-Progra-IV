@@ -45,7 +45,9 @@ const Login = () => {
                 navigate('/medicos/perfil');
             } else if (data.rol === 'PACIENTE') {
                 navigate('/pacientes/indexPaciente');
-            } else {
+            } else if (data.rol === 'ADMINISTRADOR'){
+                navigate('/admin/AdminPanel');
+            }else {
                 navigate('/');
             }
 
