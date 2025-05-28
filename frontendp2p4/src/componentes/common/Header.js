@@ -3,9 +3,17 @@ import logo from '../../imagenes/logo.png';
 import '../../css/common.css';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const { usuario, logout, loading } = useContext(AppContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();           // borra el usuario del contexto
+        navigate('/');      // redirige al index
+    };
+
 
     if (loading) return null; // 🔁 no renderizar mientras carga
 
@@ -34,7 +42,8 @@ const Header = () => {
                                     <button type="button" className="dropdown-toggle">Banner▼</button>
                                     <ul className="dropdown-menu">
                                         <li><Link to="/medicos/settings">Settings</Link></li>
-                                        <li><button onClick={logout} className="logout-button">Log out</button></li>
+                                        <li><button onClick={handleLogout} className="logout-button">Log out</button>
+                                        </li>
                                     </ul>
                                 </li>
                             </>
@@ -47,7 +56,8 @@ const Header = () => {
                                 <li className="dropdown">
                                     <button type="button" className="dropdown-toggle">SLee▼</button>
                                     <ul className="dropdown-menu">
-                                        <li><button onClick={logout} className="logout-button">Log out</button></li>
+                                        <li><button onClick={handleLogout} className="logout-button">Log out</button>
+                                        </li>
                                     </ul>
                                 </li>
                             </>
@@ -57,7 +67,8 @@ const Header = () => {
                             <li className="dropdown">
                                 <button type="button" className="dropdown-toggle">Banner▼</button>
                                 <ul className="dropdown-menu">
-                                    <li><button onClick={logout} className="logout-button">Log out</button></li>
+                                    <li><button onClick={handleLogout} className="logout-button">Log out</button>
+                                    </li>
                                 </ul>
                             </li>
                         )}
