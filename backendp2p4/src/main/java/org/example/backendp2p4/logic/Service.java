@@ -37,6 +37,11 @@ public class Service {
         return usuarioRepository.findFirstByNombre(nombre).isPresent();
     }
 
+    public Usuario findUsuarioByNombre(String nombre) {
+        return usuarioRepository.findFirstByNombre(nombre)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
     //Citas
     public Iterable<org.example.backendp2p4.logic.Cita> findAllCitas() {
         return citaRepository.findAll();
@@ -121,6 +126,19 @@ public class Service {
     public List<org.example.backendp2p4.logic.Medico> findMedicoByEspecialidadContainingIgnoreCaseAndCiudadContainingIgnoreCaseAndEstadoContainingIgnoreCase(String especialidad, String ciudad, String estado) {
         return medicoRepository.findMedicoByEspecialidadContainingIgnoreCaseAndCiudadContainingIgnoreCaseAndEstadoContainingIgnoreCase(especialidad, ciudad, estado);
     }
+
+    public void confirmarCita(Integer citaId) {
+        Cita cita = citaRepository.findById(citaId).orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        cita.setEstado("CONFIRMADA");
+        citaRepository.save(cita);
+    }
+
+    public void cancelarCita(Integer citaId) {
+        Cita cita = citaRepository.findById(citaId).orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        cita.setEstado("CANCELADA");
+        citaRepository.save(cita);
+    }
+
 
     public Iterable<org.example.backendp2p4.logic.Medico> findAllMedicoAprobados(){
         List<org.example.backendp2p4.logic.Medico> medicos = new ArrayList<>();

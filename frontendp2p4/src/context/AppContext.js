@@ -5,7 +5,7 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [usuario, setUsuario] = useState(null);
-    const [loading, setLoading] = useState(true); // ✅ bandera de carga
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('token');

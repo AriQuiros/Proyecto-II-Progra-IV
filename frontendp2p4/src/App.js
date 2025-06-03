@@ -10,6 +10,9 @@ import RegisterPatient from './componentes/register/RegisterPatient';
 import RegisterDoctor from './componentes/register/RegisterDoctor';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminPanel from "./componentes/admin/AdminPanel";
+import MedicoPanel from "./componentes/medico/MedicoPanel";
+import MedicoPerfil from "./componentes/medico/Perfil";
+import MedicoSettings from "./componentes/medico/Settings";
 
 function App() {
     return (
@@ -33,6 +36,9 @@ function Main() {
             <Route path="/register/patient" element={<RegisterPatient />} />
             <Route path="/register/doctor" element={<RegisterDoctor />} />
             <Route path="/admin/AdminPanel" element={<AdminPanel />} />
+            <Route path="/medico/MedicoPanel" element={<MedicoPanel />} />
+            <Route path="/medico/Perfil" element={<MedicoPerfil />} />
+            <Route path="/medico/Settings" element={<MedicoSettings/>}/>
         </Routes>
     );
 }

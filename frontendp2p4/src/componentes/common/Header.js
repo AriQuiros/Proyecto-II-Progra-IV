@@ -36,12 +36,12 @@ const Header = () => {
 
                         {rol === 'MEDICO' && (
                             <>
-                                <li><Link to="/medicos/show">Appointments</Link></li>
-                                <li><Link to="/medicos/perfil">Profile</Link></li>
+                                <li><Link to="/medico/MedicoPanel">Appointments</Link></li>
+                                <li><Link to="/medico/Perfil">Profile</Link></li>
                                 <li className="dropdown">
                                     <button type="button" className="dropdown-toggle">Banner▼</button>
                                     <ul className="dropdown-menu">
-                                        <li><Link to="/medicos/settings">Settings</Link></li>
+                                        <li><Link to="/medico/Settings">Settings</Link></li>
                                         <li><button onClick={handleLogout} className="logout-button">Log out</button>
                                         </li>
                                     </ul>

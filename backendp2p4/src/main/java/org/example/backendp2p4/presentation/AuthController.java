@@ -9,6 +9,7 @@ import org.example.backendp2p4.security.CustomUserDetails;
 import org.example.backendp2p4.security.TokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -80,20 +82,31 @@ public class AuthController {
         return ResponseEntity.ok("Administrador registrado");
     }
 
-
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(usuario.getNombre(), usuario.getClave()));
 
-        var token = tokenService.generateToken(authentication);
         var custom = (CustomUserDetails) authentication.getPrincipal();
+        Usuario user = custom.getUsuario();
+
+        // Verificar si es médico y si su cuenta está aprobada
+        if ("MEDICO".equals(user.getRol())) {
+            Optional<org.example.backendp2p4.logic.Medico> medico = service.findMedicoById(user.getId());
+            if (medico.isPresent() && !"APROBADO".equalsIgnoreCase(medico.get().getEstado())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Su cuenta aún no ha sido aprobada");
+            }
+        }
+
+        var token = tokenService.generateToken(authentication);
 
         Map<String, String> result = new HashMap<>();
         result.put("token", token);
-        result.put("nombre", custom.getUsuario().getNombre());
-        result.put("rol", custom.getUsuario().getRol());
-        return result;
+        result.put("nombre", user.getNombre());
+        result.put("rol", user.getRol());
+
+        return ResponseEntity.ok(result);
     }
 
 }

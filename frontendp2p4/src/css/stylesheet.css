@@ -355,3 +355,339 @@
 .btn-rechazar:hover {
     background: #c0392b;
 }
+
+
+/* ======= DOCTOR CITAS ======= */
+.doctor-citas-contenido {
+    margin: 20px 60px;
+    background-color: #eeeeee;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.doctor-nombre-citas {
+    color: #1e5dc9;
+    font-style: italic;
+}
+
+.doctor-search-bar select,
+.doctor-search-bar input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.doctor-btn-search {
+    padding: 8px 12px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.doctor-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.doctor-card-cita {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    margin-top: 10px;
+}
+.doctor-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.doctor-left img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+.doctor-paciente-nombre {
+    font-weight: bold;
+}
+.doctor-right {
+    flex-direction: column;
+    align-items: flex-end;
+    display: flex;
+}
+.doctor-fecha {
+    font-size: 15px;
+    color: chocolate;
+    margin-right: 750px;
+}
+.doctor-estado {
+    margin-top: 5px;
+    margin-right: 500px;
+}
+.badge-pending-doctor, .badge-attended-doctor, .badge-cancelled-doctor {
+    padding: 4px 8px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.badge-pending-doctor {
+    background: gold;
+}
+.badge-attended-doctor {
+    background: #28a745;
+    color: #fff;
+}
+.badge-cancelled-doctor {
+    background: #dc3545;
+    color: #fff;
+}
+.doctor-acciones a {
+    margin: 0 5px;
+    font-size: 0.9em;
+    text-decoration: none;
+    font-weight: bold;
+}
+.link-green-doctor {
+    color: #28a745;
+}
+.link-red-doctor {
+    color: #dc3545;
+}
+.link-view-doctor {
+    color: #007bff;
+}
+
+
+/* ======= DOCTOR PROFILE VIEW ======= */
+.doctor-perfil-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #dee7ed;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: #3A73C4;
+}
+
+.doctor-perfil-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #3A73C4;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.doctor-perfil-body {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.doctor-perfil-foto {
+    flex-shrink: 0;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-perfil-img {
+    border-radius: 50%; /* Para que se vea circular */
+    border: 5px solid #00b4d8;
+    box-shadow: 0 4px 20px rgba(0, 180, 216, 0.3);
+}
+
+.doctor-perfil-foto img
+{
+    width: 190px;
+    height: 180px;
+}
+
+
+.doctor-perfil-info {
+    flex: 1;
+    background-color: #ffffffdd;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.doctor-perfil-info p {
+    margin: 12px 0;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.doctor-perfil-info i {
+    color: #00b4d8;
+    margin-right: 8px;
+}
+
+.doctor-perfil-horarios {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 12px;
+}
+
+.doctor-perfil-horarios li {
+    padding: 6px 0;
+    font-size: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* === DOCTOR SETTINGS - PANEL DE EDICIÓN === */
+
+.doctor-settings-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.doctor-settings-container h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+/* === Distribución de columnas === */
+.doctor-settings-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.doctor-settings-form-col {
+    flex: 1 1 300px;
+}
+
+.imagen-col {
+    max-width: 300px;
+}
+
+/* === Foto de perfil === */
+.doctor-settings-form-input[type="file"] {
+    margin-bottom: 12px;
+}
+
+.doctor-settings-img-preview {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-top: 8px;
+}
+
+/* === Campos generales === */
+.doctor-settings-form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-settings-form-label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.doctor-settings-form-input {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease;
+}
+
+.doctor-settings-form-input:focus {
+    outline: none;
+    border-color: #3498db;
+    background-color: #fff;
+}
+
+/* === Horarios === */
+.doctor-settings-horario-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.doctor-settings-horario-row label {
+    width: 90px;
+    font-weight: 500;
+    color: #444;
+}
+
+.doctor-settings-horario-row input[type="time"] {
+    flex: 1;
+    min-width: 120px;
+    padding: 8px 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+
+/* === Botón === */
+.doctor-settings-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.doctor-settings-btn:hover {
+    background-color: #2980b9;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .doctor-settings-form-row {
+        flex-direction: column;
+    }
+
+    .doctor-settings-horario-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .doctor-settings-horario-row label {
+        width: 100%;
+    }
+
+    .doctor-settings-horario-row input[type="time"] {
+        width: 100%;
+    }
+
+    .doctor-settings-btn {
+        font-size: 15px;
+    }
+}
+

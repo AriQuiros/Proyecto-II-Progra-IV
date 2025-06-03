@@ -1,12 +1,23 @@
 package org.example.backendp2p4.presentation;
 
+import org.example.backendp2p4.dto.CitaDTO;
+import org.example.backendp2p4.dto.HorarioDTO;
 import org.example.backendp2p4.dto.MedicoCardDTO;
-import org.example.backendp2p4.logic.Service;
+import org.example.backendp2p4.logic.*;
+import org.example.backendp2p4.security.JwtUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @RestController
 @RequestMapping("/api/medicos")
@@ -37,4 +48,140 @@ public class MedicoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/citas")
+    public ResponseEntity<List<CitaDTO>> obtenerCitasMedico(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String paciente) {
+
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
+
+            Optional<Usuario> usuarioOpt = Optional.ofNullable(service.findUsuarioByNombre(nombreUsuario));
+            if (usuarioOpt.isEmpty() || !"MEDICO".equals(usuarioOpt.get().getRol())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            Usuario usuario = usuarioOpt.get();
+            Optional<Medico> medicoOpt = service.findMedicoById(usuario.getId());
+            if (medicoOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+            Medico medico = medicoOpt.get();
+            List<Cita> citas = service.buscarCitasPorMedico(medico, estado, paciente);
+
+            List<CitaDTO> dtoList = citas.stream().map(c -> {
+                CitaDTO dto = new CitaDTO();
+                dto.setNumero(c.getId());
+                dto.setPacienteNombre(c.getPaciente().getUsuario().getNombre());
+                dto.setFechaHora(c.getFechaHora());
+                dto.setEstado(c.getEstado());
+                dto.setNotas(c.getNotas());
+                return dto;
+            }).toList();
+
+            return ResponseEntity.ok(dtoList);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/perfil")
+    public ResponseEntity<MedicoCardDTO> obtenerPerfil(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
+
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(service.findUsuarioByNombre(nombreUsuario));
+        if (usuarioOpt.isEmpty() || !"MEDICO".equals(usuarioOpt.get().getRol())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Optional<Medico> medicoOpt = service.findMedicoById(usuarioOpt.get().getId());
+        if (medicoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        MedicoCardDTO perfilDTO = service.convertirAMedicoPerfilDTO(medicoOpt.get());
+        return ResponseEntity.ok(perfilDTO);
+    }
+
+    @PostMapping("/editar")
+    public ResponseEntity<String> actualizarPerfil(
+            @RequestPart("perfil") MedicoCardDTO dto,
+            @RequestPart(value = "fotoPerfil", required = false) MultipartFile archivoImagen,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+        String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
+
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(service.findUsuarioByNombre(nombreUsuario));
+        if (usuarioOpt.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        Medico medico = service.findMedicoByIdConHorarios(usuarioOpt.get().getId());
+        if (medico == null) return ResponseEntity.notFound().build();
+
+        medico.getUsuario().setNombre(dto.getNombre());
+        medico.setEspecialidad(dto.getEspecialidad());
+        medico.setCiudad(dto.getCiudad());
+        medico.setInstalacion(dto.getInstalacion());
+        medico.setCostoConsulta(dto.getCostoConsulta());
+        medico.setFrecuencia(dto.getFrecuencia());
+
+        if (archivoImagen != null && !archivoImagen.isEmpty()) {
+            try {
+                String nombreArchivo = UUID.randomUUID() + "_" + archivoImagen.getOriginalFilename();
+                String ruta = "C:/sistema-citas/perfiles";
+
+                File carpeta = new File(ruta);
+                if (!carpeta.exists()) carpeta.mkdirs();
+
+                Path rutaCompleta = Paths.get(ruta, nombreArchivo);
+                Files.write(rutaCompleta, archivoImagen.getBytes());
+
+                medico.setImagen(nombreArchivo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        service.eliminarHorariosByDoctor(medico);
+        medico.getHorarios().clear();
+
+        for (HorarioDTO horarioDTO : dto.getHorarios()) {
+            if (horarioDTO.getHoraInicio() != null && !horarioDTO.getHoraInicio().isBlank()
+                    && horarioDTO.getHoraFin() != null && !horarioDTO.getHoraFin().isBlank()) {
+
+                int horaInicio = Integer.parseInt(horarioDTO.getHoraInicio().split(":")[0]);
+                int horaFin = Integer.parseInt(horarioDTO.getHoraFin().split(":")[0]);
+
+                if (horaInicio >= 6 && horaFin <= 22 && horaInicio < horaFin) {
+                    Horario h = new Horario();
+                    h.setDia(convertirDiaAEntero(horarioDTO.getDiaSemana()));
+                    h.setHorainicio(horaInicio);
+                    h.setHorafin(horaFin);
+                    h.setDoctor(medico);
+                    medico.getHorarios().add(h);
+                }
+            }
+        }
+
+        service.saveMedico(medico);
+        return ResponseEntity.ok("Perfil actualizado");
+    }
+
+
+    private int convertirDiaAEntero(String diaSemana) {
+        return switch (diaSemana) {
+            case "Lunes" -> 1;
+            case "Martes" -> 2;
+            case "Miércoles" -> 3;
+            case "Jueves" -> 4;
+            case "Viernes" -> 5;
+            case "Sábado" -> 6;
+            case "Domingo" -> 7;
+            default -> 0;
+        };
+    }
+
 }

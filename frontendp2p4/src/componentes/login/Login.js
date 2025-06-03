@@ -41,7 +41,7 @@ const Login = () => {
 
             // Redireccionar según el rol
             if (data.rol === 'MEDICO') {
-                navigate('/medicos/perfil');
+                navigate('/medico/MedicoPanel');
             } else if (data.rol === 'PACIENTE') {
                 navigate('/pacientes/indexPaciente');
             } else if (data.rol === 'ADMINISTRADOR'){
