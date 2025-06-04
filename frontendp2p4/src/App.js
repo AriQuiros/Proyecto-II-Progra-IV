@@ -13,6 +13,7 @@ import AdminPanel from "./componentes/admin/AdminPanel";
 import MedicoPanel from "./componentes/medico/MedicoPanel";
 import MedicoPerfil from "./componentes/medico/Perfil";
 import MedicoSettings from "./componentes/medico/Settings";
+import Cronograma from "./componentes/index/cronograma";
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function Main() {
             <Route path="/medico/MedicoPanel" element={<MedicoPanel />} />
             <Route path="/medico/Perfil" element={<MedicoPerfil />} />
             <Route path="/medico/Settings" element={<MedicoSettings/>}/>
+            <Route path="/cronograma/:id" element={<Cronograma />} />
         </Routes>
     );
 }

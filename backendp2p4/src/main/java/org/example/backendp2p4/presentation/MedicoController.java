@@ -3,6 +3,7 @@ package org.example.backendp2p4.presentation;
 import org.example.backendp2p4.dto.CitaDTO;
 import org.example.backendp2p4.dto.HorarioDTO;
 import org.example.backendp2p4.dto.MedicoCardDTO;
+import org.example.backendp2p4.dto.MedicoCronogramaDTO;
 import org.example.backendp2p4.logic.*;
 import org.example.backendp2p4.security.JwtUtil;
 import org.springframework.http.HttpStatus;
@@ -183,5 +184,26 @@ public class MedicoController {
             default -> 0;
         };
     }
+
+    @GetMapping("/cronograma/{id}")
+    public ResponseEntity<MedicoCronogramaDTO> obtenerCronograma(@PathVariable Integer id) {
+        Optional<Medico> medicoOpt = service.findMedicoById(id);
+        if (medicoOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+        Medico medico = medicoOpt.get();
+        MedicoCardDTO dto = service.convertirAMedicoPerfilDTO(medico);
+        List<Medico> lista = (List<Medico>) service.findAllMedicoAprobados();
+
+        int idx = lista.indexOf(medico);
+        int prev = (idx > 0) ? lista.get(idx - 1).getId() : lista.getLast().getId();
+        int next = (idx < lista.size() - 1) ? lista.get(idx + 1).getId() : lista.getFirst().getId();
+
+        MedicoCronogramaDTO result = new MedicoCronogramaDTO();
+        result.setMedico(dto);
+        result.setPrevId(prev);
+        result.setNextId(next);
+        return ResponseEntity.ok(result);
+    }
+
 
 }

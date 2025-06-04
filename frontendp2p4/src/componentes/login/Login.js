@@ -43,7 +43,7 @@ const Login = () => {
             if (data.rol === 'MEDICO') {
                 navigate('/medico/MedicoPanel');
             } else if (data.rol === 'PACIENTE') {
-                navigate('/pacientes/indexPaciente');
+                navigate('/');
             } else if (data.rol === 'ADMINISTRADOR'){
                 navigate('/admin/AdminPanel');
             }else {
