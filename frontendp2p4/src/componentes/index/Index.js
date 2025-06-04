@@ -57,7 +57,7 @@ const BuscarMedicos = () => {
                         <div key={medico.id} className="medico-card-doctor">
                             <div className="card-left-doctor">
                                 <img
-                                    src={medico.imagen ? `/images/perfiles/${medico.imagen}` : doctorDefault}
+                                    src={medico.imagen ? `http://localhost:8080/images/perfiles/${medico.imagen}` : doctorDefault}
                                     alt={medico.nombre}
                                     className="doctor-img-doctor"
                                 />

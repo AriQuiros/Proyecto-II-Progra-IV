@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/images/perfiles/**").permitAll()
                         .requestMatchers("/medicos/**").hasAuthority("SCOPE_MEDICO")
                         .requestMatchers("/pacientes/**").hasAuthority("SCOPE_PACIENTE")
                         .requestMatchers("/api/admin/**").hasAuthority("SCOPE_ADMINISTRADOR")
