@@ -592,155 +592,97 @@
     gap: 8px;
 }
 
-/* === DOCTOR SETTINGS - PANEL DE EDICIÓN === */
+/* ======= DOCTOR SETTINGS ======= */
 .doctor-settings-container {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 40px;
-    background-color: #ffffff;
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
 .doctor-settings-container h2 {
     text-align: center;
-    font-size: 28px;
     color: #2c3e50;
-    margin-bottom: 40px;
-    font-weight: 600;
+    margin-bottom: 30px;
 }
-
-/* === Distribución de columnas === */
 .doctor-settings-form-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 30px;
     margin-bottom: 30px;
-    align-items: center;
 }
-
 .doctor-settings-form-col {
-    flex: 1 1 300px;
+    flex: 1;
 }
-
 .imagen-col {
     max-width: 300px;
 }
-
-/* === Foto de perfil === */
-.doctor-settings-form-input[type="file"] {
-    margin-bottom: 12px;
-}
-
-.doctor-settings-img-preview {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #e0e0e0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    margin-top: 8px;
-}
-
-/* === Campos generales === */
 .doctor-settings-form-group {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
 }
-
 .doctor-settings-form-label {
-    margin-bottom: 4px;
-    font-weight: 500;
-    font-size: 13px;
-    color: #666;
+    margin-bottom: 8px;
+    color: #34495e;
+    font-weight: bold;
 }
-
-.doctor-settings-form-input {
-    padding: 8px 10px;
-    border-radius: 4px;
+.doctor-settings-form-input,
+.doctor-settings-form-select {
+    padding: 10px;
     border: 1px solid #ccc;
-    font-size: 14px;
-    background-color: #fcfcfc;
+    border-radius: 8px;
     transition: border-color 0.3s ease;
 }
-
-.doctor-settings-form-input:focus {
-    outline: none;
+.doctor-settings-form-input:focus,
+.doctor-settings-form-select:focus {
     border-color: #3498db;
-    background-color: #fff;
+    outline: none;
 }
-
-/* === Horarios === */
+.doctor-settings-btn {
+    width: 100%;
+    padding: 12px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.doctor-settings-btn:hover {
+    background: #2980b9;
+}
 .doctor-settings-horario-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
-
 .doctor-settings-horario-row label {
-    width: 90px;
-    font-weight: 500;
-    color: #444;
+    width: 100px;
 }
-
 .doctor-settings-horario-row input[type="time"] {
-    flex: 1;
-    min-width: 120px;
-    padding: 8px 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fcfcfc;
+    width: 120px;
+}
+.doctor-settings-img-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-top: 10px;
 }
 
-/* === Botón === */
-.doctor-settings-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    font-size: 15px;
-    font-weight: bold;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-}
-
-.doctor-settings-btn:hover {
-    background-color: #2980b9;
-}
-
-/* === Responsive === */
-.doctor-settings-form-row {
-    flex-direction: column;
-}
-
-    .doctor-settings-horario-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .doctor-settings-horario-row label {
-        width: 100%;
-    }
-
-    .doctor-settings-horario-row input[type="time"] {
-        width: 100%;
-    }
-
-    .doctor-settings-btn {
-        font-size: 15px;
-    }
 
 
 
 
-    /* ======= CRONOGRAMA ======= */
+
+/* ======= CRONOGRAMA ======= */
     .cronograma-section {
         padding: 30px;
         max-width: 1000px;

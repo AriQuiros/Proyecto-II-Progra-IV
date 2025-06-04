@@ -54,17 +54,29 @@ const Cronograma = () => {
                     <div className="cronograma-card-right">
                         {medico.horarios.map((h, idx) => (
                             <div key={idx} className="cronograma-horario-group">
-                                <p>{h.diaSemana}</p>
-                                <p>{h.fechaReal}</p>
+                                <p className="pfecha">{h.diaSemana}</p>
+                                <p className="pfecha">{h.fechaReal}</p>
                                 <div className="cronograma-horas">
                                     {h.ocupado ? (
                                         <button className="btn-hora-ocupada" disabled>{h.horaInicio}</button>
                                     ) : (
                                         <button
                                             className="btn-hora-libre"
-                                            onClick={() =>
-                                                window.location.href = `/confirmar-cita?medicoId=${medico.id}&fecha=${h.fechaReal}&hora=${h.horaInicio}`
-                                            }
+                                            onClick={() => {
+                                                const usuario = JSON.parse(localStorage.getItem("usuario"));
+                                                const query = `medicoId=${medico.id}&fecha=${h.fechaReal}&hora=${h.horaInicio}`;
+
+                                                if (!usuario) {
+                                                    localStorage.setItem("previourl", `/confirmar-cita?${query}`);
+                                                    navigate("/login");
+                                                } else if (usuario.rol === "PACIENTE") {
+                                                    navigate(`/confirmar-cita?${query}`);
+                                                } else if (usuario.rol === "MEDICO") {
+                                                    navigate("/medico/MedicoPanel");
+                                                } else if (usuario.rol === "ADMINISTRADOR") {
+                                                    navigate("/admin/AdminPanel");
+                                                }
+                                            }}
                                         >
                                             {h.horaInicio}
                                         </button>

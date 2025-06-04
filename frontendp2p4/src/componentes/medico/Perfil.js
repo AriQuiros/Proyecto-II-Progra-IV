@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import '../../css/stylesheet.css';
 import { AppContext } from '../../context/AppContext';
+import usuarioImg from '../../imagenes/usuario.png';
 
 const MedicoPerfil = () => {
     const { usuario } = useContext(AppContext);
@@ -37,7 +38,7 @@ const MedicoPerfil = () => {
                     {perfil.imagen ? (
                         <img src={`http://localhost:8080/images/perfiles/${perfil.imagen}`} alt="Foto de perfil" />
                     ) : (
-                        <img src="/src/imagenes/usuario.png" alt="Foto por defecto" />
+                        <img src={usuarioImg} alt="Foto por defecto"/>
                     )}
                 </div>
                 <div className="doctor-perfil-info">

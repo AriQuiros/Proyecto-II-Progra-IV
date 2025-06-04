@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import '../../css/stylesheet.css';
 import { AppContext } from '../../context/AppContext';
+import usuarioImg from '../../imagenes/usuario.png';
+
 
 const MedicoPanel = () => {
     const { usuario } = useContext(AppContext);
@@ -85,7 +87,7 @@ const MedicoPanel = () => {
                     citas.map((cita) => (
                         <div className="doctor-card-cita" key={cita.numero}>
                             <div className="doctor-left">
-                                <img src="/src/imagenes/usuario.png" alt="Paciente" />
+                                <img src={usuarioImg} alt="Paciente"/>
                                 <span className="doctor-paciente-nombre">{cita.pacienteNombre}</span>
                             </div>
                             <div className="doctor-right">

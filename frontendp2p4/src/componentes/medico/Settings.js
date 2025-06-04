@@ -116,26 +116,25 @@ const MedicoSettings = () => {
                             <input type="number" name="frecuencia" value={perfil.frecuencia} onChange={handleChange} className="doctor-settings-form-input" />
                         </div>
                     </div>
-                </div>
-
-                {/* Horarios */}
-                <div className="doctor-settings-form-group">
-                    <label className="doctor-settings-form-label">Configurar Horarios Semanales:</label>
-                    {diasSemana.map((dia, index) => (
-                        <div className="doctor-settings-horario-row" key={index}>
-                            <label>{dia}:</label>
-                            <input
-                                type="time"
-                                value={perfil.horarios[index]?.horaInicio || ''}
-                                onChange={(e) => handleHorarioChange(index, "horaInicio", e.target.value)}
-                            />
-                            <input
-                                type="time"
-                                value={perfil.horarios[index]?.horaFin || ''}
-                                onChange={(e) => handleHorarioChange(index, "horaFin", e.target.value)}
-                            />
-                        </div>
-                    ))}
+                    {/* Horarios */}
+                    <div className="doctor-settings-form-group">
+                        <label className="doctor-settings-form-label">Configurar Horarios Semanales:</label>
+                        {diasSemana.map((dia, index) => (
+                            <div className="doctor-settings-horario-row" key={index}>
+                                <label>{dia}:</label>
+                                <input
+                                    type="time"
+                                    value={perfil.horarios[index]?.horaInicio || ''}
+                                    onChange={(e) => handleHorarioChange(index, "horaInicio", e.target.value)}
+                                />
+                                <input
+                                    type="time"
+                                    value={perfil.horarios[index]?.horaFin || ''}
+                                    onChange={(e) => handleHorarioChange(index, "horaFin", e.target.value)}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 <button type="submit" className="doctor-settings-btn">Guardar</button>

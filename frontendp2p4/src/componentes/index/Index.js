@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../css/stylesheet.css';
 import doctorDefault from '../../imagenes/usuario.png';
+import { AppContext } from '../../context/AppContext';
 
 const BuscarMedicos = () => {
     const [especialidad, setEspecialidad] = useState('');
     const [ciudad, setCiudad] = useState('');
     const [medicos, setMedicos] = useState([]);
+
+    const { usuario, loading } = useContext(AppContext); // ✅ usar contexto
 
     useEffect(() => {
         const esp = localStorage.getItem("especialidad") || '';
@@ -32,6 +35,9 @@ const BuscarMedicos = () => {
             console.error("Error al buscar médicos:", error);
         }
     };
+
+    // Mientras carga el contexto
+    if (loading) return <p style={{ textAlign: "center" }}>Cargando...</p>;
 
     return (
         <div className="search-contenido-doctor">
@@ -84,10 +90,10 @@ const BuscarMedicos = () => {
                                                 <button
                                                     className="hora-libre"
                                                     onClick={() => {
-                                                        const usuario = JSON.parse(localStorage.getItem("usuario"));
                                                         const query = `medicoId=${medico.id}&fecha=${horario.fechaReal}&hora=${horario.horaInicio}`;
 
-                                                        if (!usuario) {
+                                                        if (!usuario?.token) {
+                                                            // no está logueado
                                                             localStorage.setItem("previourl", `/confirmar-cita?${query}`);
                                                             window.location.href = "/login";
                                                         } else if (usuario.rol === "PACIENTE") {
@@ -121,4 +127,3 @@ const BuscarMedicos = () => {
 };
 
 export default BuscarMedicos;
-
