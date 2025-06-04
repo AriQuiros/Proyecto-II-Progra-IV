@@ -14,6 +14,7 @@ import MedicoPanel from "./componentes/medico/MedicoPanel";
 import MedicoPerfil from "./componentes/medico/Perfil";
 import MedicoSettings from "./componentes/medico/Settings";
 import Cronograma from "./componentes/index/cronograma";
+import ConfirmarCita from "./componentes/login/ConfirmarCita";
 
 function App() {
     return (
@@ -41,6 +42,7 @@ function Main() {
             <Route path="/medico/Perfil" element={<MedicoPerfil />} />
             <Route path="/medico/Settings" element={<MedicoSettings/>}/>
             <Route path="/cronograma/:id" element={<Cronograma />} />
+            <Route path="/confirmar-cita" element={<ConfirmarCita />} />
         </Routes>
     );
 }

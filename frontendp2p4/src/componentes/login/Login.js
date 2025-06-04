@@ -10,7 +10,7 @@ const Login = () => {
     const [error, setError] = useState(null);
 
     const { login } = useContext(AppContext);
-    const navigate = useNavigate(); // para redirigir
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -30,23 +30,19 @@ const Login = () => {
 
             const data = await res.json();
 
-            // Suponemos que el backend responde con { token, rol, nombre }
-            login({
-                token: data.token,
-                rol: data.rol,
-                nombre: data.nombre,
-            });
+            login({ token: data.token, rol: data.rol, nombre: data.nombre });
+            localStorage.setItem("usuario", JSON.stringify({ nombre: data.nombre, rol: data.rol }));
 
-            setError(null);
+            const savedUrl = localStorage.getItem("previourl");
+            localStorage.removeItem("previourl");
 
-            // Redireccionar según el rol
-            if (data.rol === 'MEDICO') {
+            if (savedUrl && data.rol === 'PACIENTE') {
+                navigate(savedUrl);
+            } else if (data.rol === 'MEDICO') {
                 navigate('/medico/MedicoPanel');
-            } else if (data.rol === 'PACIENTE') {
-                navigate('/');
-            } else if (data.rol === 'ADMINISTRADOR'){
+            } else if (data.rol === 'ADMINISTRADOR') {
                 navigate('/admin/AdminPanel');
-            }else {
+            } else {
                 navigate('/');
             }
 

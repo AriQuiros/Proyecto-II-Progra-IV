@@ -355,19 +355,29 @@
 .btn-rechazar:hover {
     background: #c0392b;
 }
-
-
 /* ======= DOCTOR CITAS ======= */
 .doctor-citas-contenido {
-    margin: 20px 60px;
+    margin: 40px 200px;
+    max-width: 1000px;
     background-color: #eeeeee;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.doctor-nombre-citas {
+
+.doctor-citas-contenido h2 {
     color: #1e5dc9;
     font-style: italic;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.doctor-search-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 .doctor-search-bar select,
@@ -375,9 +385,8 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 20px;
-    margin-left: 20px;
 }
+
 .doctor-btn-search {
     padding: 8px 12px;
     background: #007bff;
@@ -385,13 +394,14 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 20px;
 }
+
 .doctor-cards-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
+
 .doctor-card-cita {
     display: flex;
     justify-content: space-between;
@@ -399,66 +409,104 @@
     background: #fff;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    margin-top: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
 }
+
 .doctor-left {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
 }
+
 .doctor-left img {
     width: 45px;
     height: 45px;
     border-radius: 50%;
 }
+
 .doctor-paciente-nombre {
     font-weight: bold;
 }
+
 .doctor-right {
-    flex-direction: column;
-    align-items: flex-end;
     display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    margin-right: 20px;
 }
+
+.doctor-right p, span {
+    margin-right: 50px;
+    color: #2c3e50;
+}
+
 .doctor-fecha {
     font-size: 15px;
     color: chocolate;
-    margin-right: 750px;
 }
-.doctor-estado {
-    margin-top: 5px;
-    margin-right: 500px;
-}
-.badge-pending-doctor, .badge-attended-doctor, .badge-cancelled-doctor {
+
+.badge-pending-doctor,
+.badge-attended-doctor,
+.badge-cancelled-doctor {
     padding: 4px 8px;
     border-radius: 25px;
     font-weight: bold;
+    font-size: 0.85em;
+    display: inline-block;
 }
+
 .badge-pending-doctor {
     background: gold;
 }
+
 .badge-attended-doctor {
     background: #28a745;
     color: #fff;
 }
+
 .badge-cancelled-doctor {
     background: #dc3545;
     color: #fff;
 }
-.doctor-acciones a {
-    margin: 0 5px;
-    font-size: 0.9em;
-    text-decoration: none;
-    font-weight: bold;
+
+.doctor-acciones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
+
+.doctor-acciones button {
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 6px;
+    font-size: 0.9em;
+}
+
 .link-green-doctor {
     color: #28a745;
 }
+
 .link-red-doctor {
     color: #dc3545;
 }
+
 .link-view-doctor {
     color: #007bff;
+}
+
+.mensaje-exito {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
 }
 
 
@@ -853,6 +901,90 @@
         cursor: not-allowed;
         opacity: 0.7;
     }
+
+
+/* Confirmar Cita CSS */
+
+.cita-confirm-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+    background-color: #f9fbfd;
+}
+
+.cita-confirm-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.cita-confirm-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+.cita-confirm-avatar {
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.cita-confirm-info {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+.cita-confirm-info i {
+    margin-right: 8px;
+    color: #555;
+}
+
+.cita-confirm-nombre,
+.cita-confirm-fecha,
+.cita-confirm-ubicacion {
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.cita-confirm-botones {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-confirmar {
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-confirmar:hover {
+    background-color: #1565c0;
+}
+
+.btn-cancelar {
+    background-color: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.btn-cancelar:hover {
+    background-color: #e0e0e0;
+}
+
 
 
 

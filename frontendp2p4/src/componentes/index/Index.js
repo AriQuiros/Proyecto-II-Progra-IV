@@ -7,14 +7,12 @@ const BuscarMedicos = () => {
     const [ciudad, setCiudad] = useState('');
     const [medicos, setMedicos] = useState([]);
 
-    // Cargar filtros y datos al iniciar
     useEffect(() => {
         const esp = localStorage.getItem("especialidad") || '';
         const ciu = localStorage.getItem("ciudad") || '';
         setEspecialidad(esp);
         setCiudad(ciu);
 
-        // Cargar automáticamente médicos aprobados
         fetch(`http://localhost:8080/api/medicos?especialidad=${esp}&ciudad=${ciu}`)
             .then(res => res.json())
             .then(data => setMedicos(data))
@@ -23,7 +21,6 @@ const BuscarMedicos = () => {
 
     const handleBuscar = async (e) => {
         e.preventDefault();
-
         localStorage.setItem("especialidad", especialidad);
         localStorage.setItem("ciudad", ciudad);
 
@@ -40,18 +37,8 @@ const BuscarMedicos = () => {
         <div className="search-contenido-doctor">
             <section className="search-bar-doctor">
                 <form onSubmit={handleBuscar}>
-                    <input
-                        type="text"
-                        placeholder="Speciality"
-                        value={especialidad}
-                        onChange={(e) => setEspecialidad(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="City"
-                        value={ciudad}
-                        onChange={(e) => setCiudad(e.target.value)}
-                    />
+                    <input type="text" placeholder="Speciality" value={especialidad} onChange={(e) => setEspecialidad(e.target.value)} />
+                    <input type="text" placeholder="City" value={ciudad} onChange={(e) => setCiudad(e.target.value)} />
                     <button type="submit">Search</button>
                 </form>
             </section>
@@ -97,7 +84,19 @@ const BuscarMedicos = () => {
                                                 <button
                                                     className="hora-libre"
                                                     onClick={() => {
-                                                        window.location.href = `/confirmar-cita?medicoId=${medico.id}&fecha=${horario.fechaReal}&hora=${horario.horaInicio}`;
+                                                        const usuario = JSON.parse(localStorage.getItem("usuario"));
+                                                        const query = `medicoId=${medico.id}&fecha=${horario.fechaReal}&hora=${horario.horaInicio}`;
+
+                                                        if (!usuario) {
+                                                            localStorage.setItem("previourl", `/confirmar-cita?${query}`);
+                                                            window.location.href = "/login";
+                                                        } else if (usuario.rol === "PACIENTE") {
+                                                            window.location.href = `/confirmar-cita?${query}`;
+                                                        } else if (usuario.rol === "MEDICO") {
+                                                            window.location.href = "/medico/MedicoPanel";
+                                                        } else if (usuario.rol === "ADMINISTRADOR") {
+                                                            window.location.href = "/admin/AdminPanel";
+                                                        }
                                                     }}
                                                 >
                                                     {horario.horaInicio}
@@ -109,11 +108,7 @@ const BuscarMedicos = () => {
                             </div>
 
                             <div className="boton-doctor">
-                                <button
-                                    onClick={() =>
-                                        window.location.href = `/cronograma/${medico.id}`
-                                    }
-                                >
+                                <button onClick={() => window.location.href = `/cronograma/${medico.id}`}>
                                     Schedule <i className="bi bi-arrow-right-circle-fill"></i>
                                 </button>
                             </div>
@@ -126,3 +121,4 @@ const BuscarMedicos = () => {
 };
 
 export default BuscarMedicos;
+
