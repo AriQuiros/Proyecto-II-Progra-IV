@@ -205,5 +205,23 @@ public class MedicoController {
         return ResponseEntity.ok(result);
     }
 
+    @PostMapping("/confirmar")
+    public ResponseEntity<String> confirmarCita(
+            @RequestParam("citaId") Integer citaId,
+            @RequestParam("notas") String notas) {
+
+        Optional<Cita> citaOpt = service.findCitaById(citaId);
+        if (citaOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Cita cita = citaOpt.get();
+        cita.setNotas(notas);
+        cita.setEstado("CONFIRMADA");
+        service.saveCita(cita);
+
+        return ResponseEntity.ok("Cita confirmada correctamente.");
+    }
+
 
 }

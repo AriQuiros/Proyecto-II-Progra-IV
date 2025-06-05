@@ -7,6 +7,9 @@ const Historico = () => {
     const [estado, setEstado] = useState("");
     const [medico, setMedico] = useState("");
 
+    const [mostrarNotaModal, setMostrarNotaModal] = useState(false);
+    const [notaSeleccionada, setNotaSeleccionada] = useState("");
+
     useEffect(() => {
         if (!usuario?.token) return;
 
@@ -33,7 +36,7 @@ const Historico = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // No necesitas hacer nada aquí, ya que el useEffect se disparará automáticamente por los filtros
+        // No necesitas hacer nada aquí, ya que el useEffect se dispara por los filtros
     };
 
     return (
@@ -68,16 +71,41 @@ const Historico = () => {
                                 <p><strong>Especialidad:</strong> {cita.especialidad}</p>
                                 <p><strong>Instalación:</strong> {cita.instalacion} @ {cita.ciudad}</p>
                             </div>
-                            <div className= "lista-citas2">
+                            <div className="lista-citas2">
                                 <p><strong>Fecha:</strong> {new Date(cita.fechaHora).toLocaleDateString()}</p>
                                 <p><strong>Hora:</strong> {new Date(cita.fechaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                 <span className={`estado ${cita.estado.toLowerCase()}`}>{cita.estado}</span>
+                                {(cita.estado === 'CONFIRMADA' || cita.estado === 'COMPLETADA') && cita.notas && (
+                                    <div className="acciones-cita">
+                                        <button
+                                            className="btn-ver-nota"
+                                            onClick={() => {
+                                                setNotaSeleccionada(cita.notas);
+                                                setMostrarNotaModal(true);
+                                            }}
+                                        >
+                                            🔍 Ver Nota
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))
-
                 )}
             </div>
+
+            {/* Modal para ver nota */}
+            {mostrarNotaModal && (
+                <div className="modal-nota-overlay">
+                    <div className="modal-nota">
+                        <h3>Nota de la cita</h3>
+                        <div className="modal-ver-nota">{notaSeleccionada}</div>
+                        <div className="modal-nota-botones">
+                            <button onClick={() => setMostrarNotaModal(false)} className="btn-confirmar">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

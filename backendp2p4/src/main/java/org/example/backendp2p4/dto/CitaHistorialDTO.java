@@ -12,6 +12,7 @@ public class CitaHistorialDTO {
     private String instalacion;
     private LocalDateTime fechaHora;
     private String estado;
+    private String notas;
 
     public CitaHistorialDTO(Cita cita) {
         this.id = cita.getId();
@@ -21,6 +22,7 @@ public class CitaHistorialDTO {
         this.instalacion = cita.getDoctor().getInstalacion();
         this.fechaHora = cita.getFechaHora();
         this.estado = cita.getEstado();
+        this.notas = cita.getNotas();
     }
 
     public Integer getId() {
@@ -77,5 +79,13 @@ public class CitaHistorialDTO {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
     }
 }

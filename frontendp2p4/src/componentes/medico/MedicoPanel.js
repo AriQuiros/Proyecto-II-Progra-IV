@@ -3,13 +3,21 @@ import '../../css/stylesheet.css';
 import { AppContext } from '../../context/AppContext';
 import usuarioImg from '../../imagenes/usuario.png';
 
-
 const MedicoPanel = () => {
     const { usuario } = useContext(AppContext);
     const [citas, setCitas] = useState([]);
     const [estado, setEstado] = useState('');
     const [paciente, setPaciente] = useState('');
     const [mensaje, setMensaje] = useState('');
+
+    // Modal para confirmar cita
+    const [mostrarNotaModal, setMostrarNotaModal] = useState(false);
+    const [notaTexto, setNotaTexto] = useState('');
+    const [citaSeleccionada, setCitaSeleccionada] = useState(null);
+
+    // Modal para ver nota
+    const [mostrarVerNotaModal, setMostrarVerNotaModal] = useState(false);
+    const [notaParaVer, setNotaParaVer] = useState('');
 
     const fetchCitas = async () => {
         try {
@@ -24,7 +32,6 @@ const MedicoPanel = () => {
             });
 
             const data = await res.json();
-            console.log('Citas desde backend:', data);
             setCitas(data);
         } catch (err) {
             console.error('Error al cargar citas:', err);
@@ -35,15 +42,20 @@ const MedicoPanel = () => {
         if (usuario?.token) fetchCitas();
     }, [usuario, estado, paciente]);
 
-    const confirmarCita = async (id) => {
-        const nota = prompt("Ingrese las notas para la cita:");
-        if (!nota) return;
+    const confirmarCita = (id) => {
+        setCitaSeleccionada(id);
+        setNotaTexto('');
+        setMostrarNotaModal(true);
+    };
+
+    const enviarNota = async () => {
+        if (!notaTexto || !citaSeleccionada) return;
 
         const formData = new URLSearchParams();
-        formData.append('citaId', id);
-        formData.append('notas', nota);
+        formData.append('citaId', citaSeleccionada);
+        formData.append('notas', notaTexto);
 
-        const res = await fetch('http://localhost:8080/medicos/confirmar', {
+        const res = await fetch('http://localhost:8080/api/medicos/confirmar', {
             method: 'POST',
             body: formData,
         });
@@ -51,11 +63,17 @@ const MedicoPanel = () => {
         if (res.ok) {
             setMensaje('Cita confirmada');
             fetchCitas();
+        } else {
+            const errText = await res.text();
+            console.error('Error al confirmar cita:', errText);
         }
+
+        setMostrarNotaModal(false);
+        setCitaSeleccionada(null);
     };
 
     const cancelarCita = async (id) => {
-        const res = await fetch(`http://localhost:8080/medicos/cancelar?citaId=${id}`);
+        const res = await fetch(`http://localhost:8080/api/medicos/cancelar?citaId=${id}`);
         if (res.ok) {
             setMensaje('Cita cancelada');
             fetchCitas();
@@ -64,8 +82,9 @@ const MedicoPanel = () => {
 
     return (
         <div className="doctor-citas-contenido">
-            <h2> {usuario?.nombre} Bruce Banner- appointments</h2>
+            <h2>{usuario?.nombre} - Panel de Citas</h2>
             {mensaje && <p className="mensaje-exito">{mensaje}</p>}
+
             <form className="doctor-search-bar" onSubmit={(e) => { e.preventDefault(); fetchCitas(); }}>
                 <select value={estado} onChange={(e) => setEstado(e.target.value)}>
                     <option value="">Estado</option>
@@ -87,7 +106,7 @@ const MedicoPanel = () => {
                     citas.map((cita) => (
                         <div className="doctor-card-cita" key={cita.numero}>
                             <div className="doctor-left">
-                                <img src={usuarioImg} alt="Paciente"/>
+                                <img src={usuarioImg} alt="Paciente" />
                                 <span className="doctor-paciente-nombre">{cita.pacienteNombre}</span>
                             </div>
                             <div className="doctor-right">
@@ -103,7 +122,15 @@ const MedicoPanel = () => {
                                 )}
                                 {cita.estado === 'CONFIRMADA' && (
                                     <div className="doctor-acciones">
-                                        <button className="link-view-doctor" onClick={() => alert(cita.notas || "Sin notas")}>🔍 Ver Nota</button>
+                                        <button
+                                            className="link-view-doctor"
+                                            onClick={() => {
+                                                setNotaParaVer(cita.notas || "Sin notas");
+                                                setMostrarVerNotaModal(true);
+                                            }}
+                                        >
+                                            🔍 Ver Nota
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -115,6 +142,38 @@ const MedicoPanel = () => {
                     </p>
                 )}
             </div>
+
+            {/* Modal para confirmar cita */}
+            {mostrarNotaModal && (
+                <div className="modal-nota-overlay">
+                    <div className="modal-nota">
+                        <h3>Ingrese las notas de la cita</h3>
+                        <textarea
+                            value={notaTexto}
+                            onChange={(e) => setNotaTexto(e.target.value)}
+                            placeholder="Notas..."
+                            rows={5}
+                        />
+                        <div className="modal-nota-botones">
+                            <button onClick={enviarNota} className="btn-confirmar">Confirmar</button>
+                            <button onClick={() => setMostrarNotaModal(false)} className="btn-cancelar">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal para ver nota */}
+            {mostrarVerNotaModal && (
+                <div className="modal-nota-overlay">
+                    <div className="modal-nota">
+                        <h3>Nota de la cita</h3>
+                        <div className="modal-ver-nota">{notaParaVer}</div>
+                        <div className="modal-nota-botones">
+                            <button onClick={() => setMostrarVerNotaModal(false)} className="btn-confirmar">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
