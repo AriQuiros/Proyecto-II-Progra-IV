@@ -51,7 +51,7 @@ const Header = () => {
 
                         {rol === 'PACIENTE' && (
                             <>
-                                <li><Link to="/pacientes/citas">Historico</Link></li>
+                                <li><Link to="/paciente/Historico">Historico</Link></li>
                                 <li><Link to="/">Search</Link></li>
                                 <li className="dropdown">
                                     <button type="button" className="dropdown-toggle">SLee▼</button>
