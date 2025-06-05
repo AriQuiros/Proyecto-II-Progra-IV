@@ -2,8 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import '../../css/stylesheet.css';
 import doctorDefault from '../../imagenes/usuario.png';
 import { AppContext } from '../../context/AppContext';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const BuscarMedicos = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [especialidad, setEspecialidad] = useState('');
     const [ciudad, setCiudad] = useState('');
     const [medicos, setMedicos] = useState([]);
@@ -90,20 +94,21 @@ const BuscarMedicos = () => {
                                                 <button
                                                     className="hora-libre"
                                                     onClick={() => {
+                                                        const usuario = JSON.parse(localStorage.getItem("usuario"));
                                                         const query = `medicoId=${medico.id}&fecha=${horario.fechaReal}&hora=${horario.horaInicio}`;
 
-                                                        if (!usuario?.token) {
-                                                            // no está logueado
+                                                        if (!usuario) {
                                                             localStorage.setItem("previourl", `/confirmar-cita?${query}`);
-                                                            window.location.href = "/login";
+                                                            navigate("/login");
                                                         } else if (usuario.rol === "PACIENTE") {
-                                                            window.location.href = `/confirmar-cita?${query}`;
+                                                            navigate(`/confirmar-cita?${query}`);
                                                         } else if (usuario.rol === "MEDICO") {
-                                                            window.location.href = "/medico/MedicoPanel";
+                                                            navigate("/medico/MedicoPanel");
                                                         } else if (usuario.rol === "ADMINISTRADOR") {
-                                                            window.location.href = "/admin/AdminPanel";
+                                                            navigate("/admin/AdminPanel");
                                                         }
                                                     }}
+
                                                 >
                                                     {horario.horaInicio}
                                                 </button>

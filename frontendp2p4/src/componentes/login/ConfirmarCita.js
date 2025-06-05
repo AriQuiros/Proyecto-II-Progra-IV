@@ -59,7 +59,7 @@ const ConfirmarCita = () => {
         <section className="cita-confirm-wrapper">
             <div className="cita-confirm-card">
                 <img
-                    src={medico.imagen ? `/images/perfiles/${medico.imagen}` : doctorDefault}
+                    src={medico.imagen ? `http://localhost:8080/images/perfiles/${medico.imagen}` : doctorDefault}
                     alt="Foto"
                     className="doctor-img-doctor"
                 />
