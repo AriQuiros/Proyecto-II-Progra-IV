@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.backendp2p4.data.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -43,8 +45,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/images/perfiles/**").permitAll()
-                        //.requestMatchers("/medicos/**").hasAuthority("SCOPE_MEDICO")
-                        //.requestMatchers("/pacientes/**").hasAuthority("SCOPE_PACIENTE")
+                        .requestMatchers("/medicos/**").hasAuthority("SCOPE_MEDICO")
+                        .requestMatchers("/pacientes/**").hasAuthority("SCOPE_PACIENTE")
                         .requestMatchers("/api/medicos/**").permitAll()
                         .requestMatchers("/api/pacientes/**").permitAll()
                         .requestMatchers("/api/admin/**").permitAll()
@@ -60,14 +62,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Primary
+    public PasswordEncoder passwordEncoder() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
-        return new ProviderManager(authenticationProvider);
+    public AuthenticationManager authenticationManager(AuthenticationProvider provider) {
+        return new ProviderManager(provider);
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

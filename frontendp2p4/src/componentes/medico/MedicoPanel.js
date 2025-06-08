@@ -10,16 +10,15 @@ const MedicoPanel = () => {
     const [paciente, setPaciente] = useState('');
     const [mensaje, setMensaje] = useState('');
 
-    // Modal para confirmar cita
     const [mostrarNotaModal, setMostrarNotaModal] = useState(false);
     const [notaTexto, setNotaTexto] = useState('');
     const [citaSeleccionada, setCitaSeleccionada] = useState(null);
 
-    // Modal para ver nota
     const [mostrarVerNotaModal, setMostrarVerNotaModal] = useState(false);
     const [notaParaVer, setNotaParaVer] = useState('');
 
     const fetchCitas = async () => {
+        if (!usuario?.token) return;
         try {
             const query = new URLSearchParams();
             if (estado) query.append('estado', estado);
@@ -39,7 +38,7 @@ const MedicoPanel = () => {
     };
 
     useEffect(() => {
-        if (usuario?.token) fetchCitas();
+      fetchCitas();
     }, [usuario, estado, paciente]);
 
     const confirmarCita = (id) => {
@@ -73,12 +72,30 @@ const MedicoPanel = () => {
     };
 
     const cancelarCita = async (id) => {
-        const res = await fetch(`http://localhost:8080/api/medicos/cancelar?citaId=${id}`);
-        if (res.ok) {
-            setMensaje('Cita cancelada');
-            fetchCitas();
+        if (!window.confirm("¿Estás seguro de que deseas cancelar esta cita?")) return;
+
+        try {
+            const res = await fetch(`http://localhost:8080/api/medicos/cancelar?citaId=${id}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${usuario?.token}`,
+                },
+            });
+
+            if (res.ok) {
+                const texto = await res.text();
+                setMensaje(texto);
+                fetchCitas();
+            } else {
+                const error = await res.text();
+                setMensaje(error || "Error al cancelar la cita.");
+            }
+        } catch (error) {
+            console.error("Error de red al cancelar cita:", error);
+            setMensaje("Error al conectar con el servidor.");
         }
     };
+
 
     return (
         <div className="doctor-citas-contenido">

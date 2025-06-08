@@ -44,7 +44,7 @@ const ConfirmarCita = () => {
 
             if (res.ok) {
                 alert("La cita fue reservada correctamente.");
-                navigate("/paciente/citas"); // redirige al historial si lo tienes
+                navigate("/paciente/Historico");
             } else {
                 alert("Error al guardar la cita");
             }

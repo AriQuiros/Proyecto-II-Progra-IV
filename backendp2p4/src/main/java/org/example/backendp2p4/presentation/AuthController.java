@@ -1,4 +1,5 @@
 package org.example.backendp2p4.presentation;
+import lombok.RequiredArgsConstructor;
 import org.example.backendp2p4.logic.Medico;
 import org.example.backendp2p4.logic.Paciente;
 import org.example.backendp2p4.logic.Service;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthController {
 
     @Autowired
@@ -80,22 +81,23 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+        System.out.println("Clave ingresada por el usuario: " + usuario.getClave());
+
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(usuario.getNombre(), usuario.getClave()));
 
-        var custom = (CustomUserDetails) authentication.getPrincipal();
+        CustomUserDetails custom = (CustomUserDetails) authentication.getPrincipal();
         Usuario user = custom.getUsuario();
 
-        // Verificar si es médico y si su cuenta está aprobada
         if ("MEDICO".equals(user.getRol())) {
-            Optional<org.example.backendp2p4.logic.Medico> medico = service.findMedicoById(user.getId());
+            Optional<Medico> medico = service.findMedicoById(user.getId());
             if (medico.isPresent() && !"APROBADO".equalsIgnoreCase(medico.get().getEstado())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("Su cuenta aún no ha sido aprobada");
             }
         }
 
-        var token = tokenService.generateToken(authentication);
+        String token = tokenService.generateToken(authentication);
 
         Map<String, String> result = new HashMap<>();
         result.put("token", token);

@@ -201,5 +201,19 @@ public class MedicoController {
         return ResponseEntity.ok("Cita confirmada correctamente.");
     }
 
+    @GetMapping("/cancelar")
+    public ResponseEntity<String> cancelarCita(@RequestParam("citaId") Integer citaId) {
+        Optional<Cita> citaOpt = service.findCitaById(citaId);
+        if (citaOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la cita a cancelar.");
+        }
+
+        Cita cita = citaOpt.get();
+        cita.setEstado("CANCELADA");
+        service.saveCita(cita);
+        return ResponseEntity.ok("Cita cancelada correctamente.");
+    }
+
+
 
 }
