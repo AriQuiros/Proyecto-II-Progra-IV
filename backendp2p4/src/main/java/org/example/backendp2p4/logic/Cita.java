@@ -1,5 +1,4 @@
 package org.example.backendp2p4.logic;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,18 +12,18 @@ import java.time.LocalDateTime;
 @Table(name = "cita")
 public class Cita {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Permitir generación automática del ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "numero", nullable = false)
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false) // Cambiamos a EAGER para cargar datos de inmediato
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "doctor_id", nullable = false)
     private Medico doctor;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false) // Cambiamos a EAGER
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;

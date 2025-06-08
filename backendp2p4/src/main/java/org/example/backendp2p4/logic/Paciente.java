@@ -1,5 +1,4 @@
 package org.example.backendp2p4.logic;
-
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

@@ -1,5 +1,4 @@
 package org.example.backendp2p4.dto;
-
 import org.example.backendp2p4.logic.Paciente;
 
 public class PacienteDTO {

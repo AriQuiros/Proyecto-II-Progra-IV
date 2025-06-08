@@ -1,12 +1,9 @@
 package org.example.backendp2p4.data;
-
 import org.example.backendp2p4.logic.Cita;
 import org.example.backendp2p4.logic.Medico;
 import org.example.backendp2p4.logic.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 

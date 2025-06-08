@@ -1,5 +1,4 @@
 package org.example.backendp2p4.logic;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -60,7 +59,6 @@ public class Medico {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<org.example.backendp2p4.logic.Horario> horarios = new LinkedHashSet<>();
 
-    // Getters y setters
     public Integer getId() {
         return id;
     }

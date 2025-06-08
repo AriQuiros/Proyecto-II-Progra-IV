@@ -37,9 +37,7 @@ public class CitaHistorialDTO {
         return doctorNombre;
     }
 
-    public void setDoctorNombre(String doctorNombre) {
-        this.doctorNombre = doctorNombre;
-    }
+    public void setDoctorNombre(String doctorNombre) {this.doctorNombre = doctorNombre;}
 
     public String getEspecialidad() {
         return especialidad;
