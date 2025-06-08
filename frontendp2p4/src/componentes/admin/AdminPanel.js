@@ -7,30 +7,31 @@ const AdminPanel = () => {
     const { usuario } = useContext(AppContext);
     const [mensaje, setMensaje] = useState('');
 
-    const fetchDoctores = async () => {
-        try {
-            const res = await fetch('http://localhost:8080/api/admin/doctores', {
-                headers: {
-                    Authorization: `Bearer ${usuario?.token}`,
-                },
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                console.error('Error al cargar doctores:', data);
-                return;
-            }
-
-            setDoctores(data);
-        } catch (err) {
-            console.error('Error en fetchDoctores:', err);
-        }
-    };
-
     useEffect(() => {
-        if (usuario?.token) fetchDoctores();
+        if (usuario?.token) {
+            (async () => {
+                try {
+                    const res = await fetch('http://localhost:8080/api/admin/doctores', {
+                        headers: {
+                            Authorization: `Bearer ${usuario?.token}`,
+                        },
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        console.error('Error al cargar doctores:', data);
+                        return;
+                    }
+
+                    setDoctores(data);
+                } catch (err) {
+                    console.error('Error en fetchDoctores:', err);
+                }
+            })();
+        }
     }, [usuario]);
+
 
     const aprobarMedico = async (id) => {
         try {

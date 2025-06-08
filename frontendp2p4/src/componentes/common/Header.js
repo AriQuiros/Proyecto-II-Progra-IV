@@ -10,12 +10,12 @@ const Header = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        logout();           // borra el usuario del contexto
-        navigate('/');      // redirige al index
+        logout();
+        navigate('/');
     };
 
 
-    if (loading) return null; // 🔁 no renderizar mientras carga
+    if (loading) return null;
 
     const rol = usuario?.rol;
 
@@ -26,7 +26,7 @@ const Header = () => {
         <header className={`header header-${rol?.toLowerCase() || 'index'}`}>
             <div className="header-container">
                 <div className="logo">
-                    <img src={logo} alt="Medical Appointments" />
+                    <img src={logo + ' '} alt="Medical Appointments" />
                     <span>Medical Appointments</span>
                 </div>
 

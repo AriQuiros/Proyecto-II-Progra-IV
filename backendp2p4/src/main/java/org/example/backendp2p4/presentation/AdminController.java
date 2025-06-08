@@ -1,13 +1,10 @@
 package org.example.backendp2p4.presentation;
-
 import org.example.backendp2p4.dto.MedicoAprobadoDTO;
-import org.example.backendp2p4.dto.MedicoCardDTO;
 import org.example.backendp2p4.logic.Medico;
 import org.example.backendp2p4.logic.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

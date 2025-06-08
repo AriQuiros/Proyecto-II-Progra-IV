@@ -1,6 +1,7 @@
 package org.example.backendp2p4.logic;
 import org.example.backendp2p4.data.*;
 import org.example.backendp2p4.dto.*;
+import org.example.backendp2p4.security.JwtUtil;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -241,6 +242,21 @@ public class Service {
         return result;
     }
 
+    public Optional<Medico> autenticarYObtenerMedico(String authHeader) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
+
+            Usuario usuario = findUsuarioByNombre(nombreUsuario);
+            if (usuario == null || !"MEDICO".equals(usuario.getRol())) return Optional.empty();
+
+            return findMedicoById(usuario.getId());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+
     //Paciente
     public Optional<Paciente> findPacienteByUsuario(Usuario usuario) { return pacienteRepository.findByUsuario(usuario);}
 
@@ -248,6 +264,21 @@ public class Service {
         saveUsuario(paciente.getUsuario());
         return pacienteRepository.save(paciente);
     }
+
+    public Optional<Paciente> autenticarYObtenerPaciente(String authHeader) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
+
+            Usuario usuario = findUsuarioByNombre(nombreUsuario);
+            if (usuario == null || !"PACIENTE".equals(usuario.getRol())) return Optional.empty();
+
+            return findPacienteByUsuario(usuario);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
 
     //Usuarios
     public Usuario saveUsuario(Usuario usuario) {

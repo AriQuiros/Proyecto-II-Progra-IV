@@ -1,4 +1,3 @@
-// src/componentes/common/Footer.js
 import React from 'react';
 import '../../css/common.css';
 import telefono from '../../imagenes/telefono.png';
@@ -9,7 +8,7 @@ const Footer = () => {
             <div className="footer-container">
                 <span id="foot">Total Soft Inc.</span>
                 <div className="contact-info">
-                    <img src={telefono} alt="Contact"/>
+                    <img src={telefono + ''} alt="Contact"/>
                     <i>+506 5467 0937</i>
                 </div>
                 <div className="social-icons">

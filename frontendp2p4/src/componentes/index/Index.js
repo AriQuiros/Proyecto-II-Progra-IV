@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import '../../css/stylesheet.css';
 import doctorDefault from '../../imagenes/usuario.png';
 import { AppContext } from '../../context/AppContext';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BuscarMedicos = () => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const BuscarMedicos = () => {
     const [ciudad, setCiudad] = useState('');
     const [medicos, setMedicos] = useState([]);
 
-    const { loading } = useContext(AppContext); // ✅ usar contexto
+    const { loading } = useContext(AppContext);
 
     useEffect(() => {
         const esp = localStorage.getItem("especialidad") || '';
@@ -39,7 +39,6 @@ const BuscarMedicos = () => {
         }
     };
 
-    // Mientras carga el contexto
     if (loading) return <p style={{ textAlign: "center" }}>Cargando...</p>;
 
     return (

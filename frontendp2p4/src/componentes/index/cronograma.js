@@ -12,7 +12,7 @@ const Cronograma = () => {
     const [nextId, setNextId] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
+        (async () => {
             try {
                 const res = await fetch(`http://localhost:8080/api/medicos/cronograma/${id}`);
                 if (!res.ok) throw new Error('No se pudo cargar el cronograma');
@@ -23,8 +23,7 @@ const Cronograma = () => {
             } catch (err) {
                 console.error("Error al cargar cronograma:", err);
             }
-        };
-        fetchData();
+        })();
     }, [id]);
 
     if (!medico) return <p style={{ textAlign: 'center' }}>Cargando cronograma...</p>;
@@ -35,7 +34,7 @@ const Cronograma = () => {
                 <div className="cronograma-card">
                     <div className="cronograma-card-left">
                         <img
-                            src={medico.imagen ? `/images/perfiles/${medico.imagen}` : doctorDefault}
+                            src={medico.imagen ? `http://localhost:8080/images/perfiles/${medico.imagen}` : doctorDefault}
                             alt={medico.nombre}
                             className="cronograma-doctor-img"
                         />

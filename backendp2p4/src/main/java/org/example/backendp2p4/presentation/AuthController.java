@@ -1,6 +1,4 @@
 package org.example.backendp2p4.presentation;
-
-import org.example.backendp2p4.data.UsuarioRepository;
 import org.example.backendp2p4.logic.Medico;
 import org.example.backendp2p4.logic.Paciente;
 import org.example.backendp2p4.logic.Service;
@@ -15,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +26,6 @@ public class AuthController {
     private Service service;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private final UsuarioRepository usuarioRepository;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 

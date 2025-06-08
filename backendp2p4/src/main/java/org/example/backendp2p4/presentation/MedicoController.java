@@ -49,63 +49,41 @@ public class MedicoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @GetMapping("/citas")
     public ResponseEntity<List<CitaDTO>> obtenerCitasMedico(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String paciente) {
 
-        try {
-            String token = authHeader.replace("Bearer ", "");
-            String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
+        Optional<Medico> medicoOpt = service.autenticarYObtenerMedico(authHeader);
+        if (medicoOpt.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-            Optional<Usuario> usuarioOpt = Optional.ofNullable(service.findUsuarioByNombre(nombreUsuario));
-            if (usuarioOpt.isEmpty() || !"MEDICO".equals(usuarioOpt.get().getRol())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
+        List<Cita> citas = service.buscarCitasPorMedico(medicoOpt.get(), estado, paciente);
+        List<CitaDTO> dtoList = citas.stream().map(this::convertirACitaDTO).toList();
 
-            Usuario usuario = usuarioOpt.get();
-            Optional<Medico> medicoOpt = service.findMedicoById(usuario.getId());
-            if (medicoOpt.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dtoList);
+    }
 
-            Medico medico = medicoOpt.get();
-            List<Cita> citas = service.buscarCitasPorMedico(medico, estado, paciente);
-
-            List<CitaDTO> dtoList = citas.stream().map(c -> {
-                CitaDTO dto = new CitaDTO();
-                dto.setNumero(c.getId());
-                dto.setPacienteNombre(c.getPaciente().getUsuario().getNombre());
-                dto.setFechaHora(c.getFechaHora());
-                dto.setEstado(c.getEstado());
-                dto.setNotas(c.getNotas());
-                return dto;
-            }).toList();
-
-            return ResponseEntity.ok(dtoList);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    private CitaDTO convertirACitaDTO(Cita c) {
+        CitaDTO dto = new CitaDTO();
+        dto.setNumero(c.getId());
+        dto.setPacienteNombre(c.getPaciente().getUsuario().getNombre());
+        dto.setFechaHora(c.getFechaHora());
+        dto.setEstado(c.getEstado());
+        dto.setNotas(c.getNotas());
+        return dto;
     }
 
     @GetMapping("/perfil")
     public ResponseEntity<MedicoCardDTO> obtenerPerfil(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        String nombreUsuario = JwtUtil.extraerNombreDesdeToken(token);
-
-        Optional<Usuario> usuarioOpt = Optional.ofNullable(service.findUsuarioByNombre(nombreUsuario));
-        if (usuarioOpt.isEmpty() || !"MEDICO".equals(usuarioOpt.get().getRol())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        Optional<Medico> medicoOpt = service.findMedicoById(usuarioOpt.get().getId());
-        if (medicoOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Medico> medicoOpt = service.autenticarYObtenerMedico(authHeader);
+        if (medicoOpt.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         MedicoCardDTO perfilDTO = service.convertirAMedicoPerfilDTO(medicoOpt.get());
         return ResponseEntity.ok(perfilDTO);
     }
+
 
     @PostMapping("/editar")
     public ResponseEntity<String> actualizarPerfil(
