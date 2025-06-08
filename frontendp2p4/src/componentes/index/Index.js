@@ -5,14 +5,13 @@ import { AppContext } from '../../context/AppContext';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const BuscarMedicos = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
 
     const [especialidad, setEspecialidad] = useState('');
     const [ciudad, setCiudad] = useState('');
     const [medicos, setMedicos] = useState([]);
 
-    const { usuario, loading } = useContext(AppContext); // ✅ usar contexto
+    const { loading } = useContext(AppContext); // ✅ usar contexto
 
     useEffect(() => {
         const esp = localStorage.getItem("especialidad") || '';

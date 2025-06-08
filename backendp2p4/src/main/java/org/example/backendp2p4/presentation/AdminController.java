@@ -1,5 +1,6 @@
 package org.example.backendp2p4.presentation;
 
+import org.example.backendp2p4.dto.MedicoAprobadoDTO;
 import org.example.backendp2p4.dto.MedicoCardDTO;
 import org.example.backendp2p4.logic.Medico;
 import org.example.backendp2p4.logic.Service;
@@ -21,8 +22,8 @@ public class AdminController {
     }
 
     @GetMapping("/doctores")
-    public ResponseEntity<List<MedicoCardDTO>> listarDoctores() {
-        List<MedicoCardDTO> medicos = service.convertirAMedicoCardDTO((List<Medico>) service.findAllMedicos());
+    public ResponseEntity<List<MedicoAprobadoDTO>> listarDoctores() {
+        List<MedicoAprobadoDTO> medicos = service.convertirAMedicoAprobadoDTO((List<Medico>) service.findAllMedicos());
         return ResponseEntity.ok(medicos);
     }
 

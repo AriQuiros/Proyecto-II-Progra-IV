@@ -2,6 +2,7 @@ package org.example.backendp2p4.logic;
 
 import org.example.backendp2p4.data.*;
 import org.example.backendp2p4.dto.HorarioDTO;
+import org.example.backendp2p4.dto.MedicoAprobadoDTO;
 import org.example.backendp2p4.dto.MedicoCardDTO;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,6 +213,22 @@ public class Service {
             }
 
             dto.setHorarios(horarios);
+            result.add(dto);
+        }
+        return result;
+    }
+
+
+    public List<MedicoAprobadoDTO> convertirAMedicoAprobadoDTO(List<org.example.backendp2p4.logic.Medico> medicos) {
+        List<MedicoAprobadoDTO> result = new ArrayList<>();
+        for (org.example.backendp2p4.logic.Medico medico : medicos) {
+            MedicoAprobadoDTO dto = new MedicoAprobadoDTO();
+            dto.setId(medico.getId());
+            dto.setNombre(medico.getUsuario().getNombre());
+            dto.setEspecialidad(medico.getEspecialidad());
+            dto.setCiudad(medico.getCiudad());
+            dto.setCostoConsulta(medico.getCostoConsulta());
+            dto.setEstado(medico.getEstado());
             result.add(dto);
         }
         return result;
