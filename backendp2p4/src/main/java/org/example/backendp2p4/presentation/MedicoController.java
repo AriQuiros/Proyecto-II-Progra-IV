@@ -1,9 +1,6 @@
 package org.example.backendp2p4.presentation;
 
-import org.example.backendp2p4.dto.CitaDTO;
-import org.example.backendp2p4.dto.HorarioDTO;
-import org.example.backendp2p4.dto.MedicoCardDTO;
-import org.example.backendp2p4.dto.MedicoCronogramaDTO;
+import org.example.backendp2p4.dto.*;
 import org.example.backendp2p4.logic.*;
 import org.example.backendp2p4.security.JwtUtil;
 import org.springframework.http.HttpStatus;
@@ -31,15 +28,25 @@ public class MedicoController {
     }
 
     @GetMapping
-    public List<MedicoCardDTO> buscarMedicos(
+    public ResponseTiempoDTO<List<MedicoCardDTO>> buscarMedicos(
             @RequestParam(required = false) String especialidad,
             @RequestParam(required = false) String ciudad
     ) {
+
+        long inicio = System.nanoTime();
+
+        List<MedicoCardDTO> resultado;
+
         if ((especialidad == null || especialidad.isBlank()) &&
                 (ciudad == null || ciudad.isBlank())) {
-            return service.getMedicosConHorarios();
+            resultado = service.getMedicosConHorarios();
+        } else {
+            resultado = service.buscarMedicos(especialidad, ciudad);
         }
-        return service.buscarMedicos(especialidad, ciudad);
+
+        long fin = System.nanoTime();
+
+        return new ResponseTiempoDTO<>(resultado, (fin - inicio));
     }
 
     @GetMapping("/{id}")
@@ -51,10 +58,12 @@ public class MedicoController {
     }
 
     @GetMapping("/citas")
-    public ResponseEntity<List<CitaDTO>> obtenerCitasMedico(
+    public ResponseEntity<ResponseTiempoDTO<List<CitaDTO>>> obtenerCitasMedico(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String paciente) {
+
+        long inicio = System.nanoTime();
 
         Optional<Medico> medicoOpt = service.autenticarYObtenerMedico(authHeader);
         if (medicoOpt.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -62,7 +71,12 @@ public class MedicoController {
         List<Cita> citas = service.buscarCitasPorMedico(medicoOpt.get(), estado, paciente);
         List<CitaDTO> dtoList = citas.stream().map(this::convertirACitaDTO).toList();
 
-        return ResponseEntity.ok(dtoList);
+        long fin = System.nanoTime();
+
+        ResponseTiempoDTO<List<CitaDTO>> response =
+                new ResponseTiempoDTO<>(dtoList, (fin - inicio));
+
+        return ResponseEntity.ok(response);
     }
 
     private CitaDTO convertirACitaDTO(Cita c) {
@@ -164,7 +178,10 @@ public class MedicoController {
     }
 
     @GetMapping("/cronograma/{id}")
-    public ResponseEntity<MedicoCronogramaDTO> obtenerCronograma(@PathVariable Integer id) {
+    public ResponseEntity<ResponseTiempoDTO<MedicoCronogramaDTO>> obtenerCronograma(@PathVariable Integer id) {
+
+        long inicio = System.nanoTime();
+
         Optional<Medico> medicoOpt = service.findMedicoById(id);
         if (medicoOpt.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -180,7 +197,13 @@ public class MedicoController {
         result.setMedico(dto);
         result.setPrevId(prev);
         result.setNextId(next);
-        return ResponseEntity.ok(result);
+
+        long fin = System.nanoTime();
+
+        ResponseTiempoDTO<MedicoCronogramaDTO> response =
+                new ResponseTiempoDTO<>(result, (fin - inicio));
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/confirmar")

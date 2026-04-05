@@ -1,5 +1,6 @@
 package org.example.backendp2p4.presentation;
 import org.example.backendp2p4.dto.CitaHistorialDTO;
+import org.example.backendp2p4.dto.ResponseTiempoDTO;
 import org.example.backendp2p4.logic.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,10 +46,12 @@ public class PacienteController {
     }
 
     @GetMapping("/citas")
-    public ResponseEntity<List<CitaHistorialDTO>> obtenerHistorialCitas(
+    public ResponseEntity<ResponseTiempoDTO<List<CitaHistorialDTO>>> obtenerHistorialCitas(
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String medico,
             @RequestHeader("Authorization") String authHeader) {
+
+        long inicio = System.nanoTime();
 
         Optional<Paciente> pacienteOpt = service.autenticarYObtenerPaciente(authHeader);
         if (pacienteOpt.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -56,7 +59,12 @@ public class PacienteController {
         List<Cita> citas = service.buscarCitasPorPaciente(pacienteOpt.get(), estado, medico);
         List<CitaHistorialDTO> dtoList = citas.stream().map(CitaHistorialDTO::new).toList();
 
-        return ResponseEntity.ok(dtoList);
+        long fin = System.nanoTime();
+
+        ResponseTiempoDTO<List<CitaHistorialDTO>> response =
+                new ResponseTiempoDTO<>(dtoList, (fin - inicio));
+
+        return ResponseEntity.ok(response);
     }
 
 
