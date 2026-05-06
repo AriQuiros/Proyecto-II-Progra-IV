@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 @org.springframework.stereotype.Service
 
@@ -25,6 +26,19 @@ public class Service {
     private PacienteRepository pacienteRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    private List<MedicoCardDTO> ordenarMedicosPorPrecioAscendente(List<MedicoCardDTO> medicos) {
+        List<MedicoCardDTO> medicosOrdenados = new ArrayList<>(medicos);
+
+        medicosOrdenados.sort(
+                Comparator.comparing(
+                        MedicoCardDTO::getCostoConsulta,
+                        Comparator.nullsLast(Integer::compareTo)
+                )
+        );
+
+        return medicosOrdenados;
+    }
 
     //usuarios
     public boolean existeUsuarioConNombre(String nombre) {
@@ -120,7 +134,9 @@ public class Service {
         List<org.example.backendp2p4.logic.Medico> medicosFiltrados = medicoRepository
                 .findMedicoByEspecialidadContainingIgnoreCaseAndCiudadContainingIgnoreCaseAndEstadoContainingIgnoreCase(especialidad, ciudad, "APROBADO");
 
-        return convertirAMedicoCardDTO(medicosFiltrados);
+        List<MedicoCardDTO> medicosDTO = convertirAMedicoCardDTO(medicosFiltrados);
+
+        return ordenarMedicosPorPrecioAscendente(medicosDTO);
     }
 
     private void mapearDatosBasicosMedico(Medico medico, MedicoBaseDTO dto) {
@@ -239,6 +255,14 @@ public class Service {
             dto.setHorarios(horarios);
             result.add(dto);
         }
+
+        result.sort(
+                Comparator.comparing(
+                        MedicoCardDTO::getCostoConsulta,
+                        Comparator.nullsLast(Comparator.naturalOrder())
+                )
+        );
+
         return result;
     }
 
