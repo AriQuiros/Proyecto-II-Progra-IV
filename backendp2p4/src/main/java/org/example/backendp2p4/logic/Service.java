@@ -40,6 +40,34 @@ public class Service {
         return medicosOrdenados;
     }
 
+    public List<MedicoAprobadoDTO> ordenarMedicosPendientesPrimero(
+            List<MedicoAprobadoDTO> medicos
+    ) {
+        medicos.sort(
+                Comparator.comparingInt(medico -> prioridadEstadoMedico(medico.getEstado()))
+        );
+
+        return medicos;
+    }
+
+
+    private int prioridadEstadoMedico(String estado) {
+        if (estado == null) {
+            return 99;
+        }
+
+        switch (estado.trim().toUpperCase()) {
+            case "PENDIENTE":
+                return 1;
+            case "APROBADO":
+                return 2;
+            case "RECHAZADO":
+                return 3;
+            default:
+                return 99;
+        }
+    }
+
     //usuarios
     public boolean existeUsuarioConNombre(String nombre) {
         return usuarioRepository.findFirstByNombre(nombre).isPresent();
