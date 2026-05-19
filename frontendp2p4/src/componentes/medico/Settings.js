@@ -9,20 +9,32 @@ const MedicoSettings = () => {
     const [perfil, setPerfil] = useState(null);
     const [imagenPreview, setImagenPreview] = useState(null);
     const [imagenFile, setImagenFile] = useState(null);
+    const [tiempo, setTiempo] = useState(null);
 
     useEffect(() => {
         const fetchPerfil = async () => {
-            const res = await fetch('http://localhost:8080/api/medicos/perfil', {
-                headers: {
-                    Authorization: `Bearer ${usuario?.token}`,
-                },
-            });
-            const data = await res.json();
-            setPerfil(data);
+            try {
+                const res = await fetch('http://localhost:8080/api/medicos/perfil', {
+                    headers: {
+                        Authorization: `Bearer ${usuario?.token}`,
+                    },
+                });
+
+                if (!res.ok) throw new Error('Error al cargar perfil');
+
+                const data = await res.json();
+
+                setPerfil(data.data);
+                setTiempo(data.tiempo);
+
+            } catch (err) {
+                console.error('Error:', err);
+            }
         };
 
         if (usuario?.token) fetchPerfil();
     }, [usuario]);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,6 +84,11 @@ const MedicoSettings = () => {
     return (
         <div className="doctor-settings-container">
             <h2>Editar Perfil Médico</h2>
+            {tiempo !== null && (
+                <div className="doctor-settings-form-group">
+                    <strong>Tiempo:</strong> {tiempo} ms
+                </div>
+            )}
             <form onSubmit={guardarPerfil} encType="multipart/form-data">
                 <div className="doctor-settings-form-row">
                     {/* Imagen */}
